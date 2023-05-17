@@ -1,0 +1,20 @@
+/* Write your global styles here, in PostCSS syntax */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--header-height: 80px;
+	}
+
+	html,
+	body {
+		height: 100%;
+		width: 100%;
+	}
+
+	.px-layout {
+		@apply px-2 md:px-16;
+	}
+}

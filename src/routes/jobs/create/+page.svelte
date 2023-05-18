@@ -13,7 +13,8 @@
     });
 
     const { form, errors, constraints, enhance } = superForm(data.form, {
-        validators: schema
+        validators: schema,
+        clearOnSubmit: 'none'
     });
 </script>
 
@@ -33,6 +34,7 @@
                 placeholder="Your post title"
                 class="rounded-md max-w-full w-full"
                 bind:value={$form.title}
+                {...$constraints.title}
             />
             {#if $errors.title}
                 <small class="text-red-600 text-sm">{$errors.title}</small>
@@ -47,6 +49,7 @@
                 class="rounded-md resize-none w-full"
                 rows="7"
                 bind:value={$form.description}
+                {...$constraints.description}
             />
             {#if $errors.description}
                 <small class="text-red-600 text-sm">{$errors.description}</small>
@@ -61,6 +64,7 @@
                 placeholder="A descriptive Job title, e.g. Senior Software Engineer"
                 class="rounded-md w-full"
                 bind:value={$form.jobTitle}
+                {...$constraints.jobTitle}
             />
             {#if $errors.jobTitle}
                 <small class="text-red-600 text-sm">{$errors.jobTitle}</small>
@@ -76,6 +80,7 @@
                     placeholder="e.g. 1000"
                     class="rounded-md w-full"
                     bind:value={$form.salaryStart}
+                    {...$constraints.salaryStart}
                 />
                 {#if $errors.salaryStart}
                     <small class="text-red-600 text-sm">{$errors.salaryStart}</small>
@@ -90,6 +95,7 @@
                     placeholder="e.g. 10000"
                     class="rounded-md w-full"
                     bind:value={$form.salaryEnd}
+                    {...$constraints.salaryEnd}
                 />
 
                 {#if $errors.salaryStart}

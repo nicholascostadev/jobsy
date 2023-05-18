@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { Loader2 } from 'lucide-svelte';
     import { superForm } from 'sveltekit-superforms/client';
     import { z } from 'zod';
 
@@ -11,8 +12,9 @@
         password: z.string().min(5, 'Password must have at least 5 characters.')
     });
 
-    const { form, errors, constraints, enhance } = superForm(data.form, {
-        validators: schema
+    const { form, errors, constraints, submitting, enhance } = superForm(data.form, {
+        validators: schema,
+        clearOnSubmit: 'none'
     });
 </script>
 
@@ -24,14 +26,16 @@
     >
         <h2 class="text-2xl mb-2 font-poppins">Start your journey</h2>
         <fieldset class="flex flex-col">
-            <label for="email" class="flex justify-start gap-1 items-center">Email </label>
+            <label for="email" class="flex justify-start gap-1 items-center">Email</label>
             <input
                 type="text"
                 id="email"
                 name="email"
                 placeholder="Your email"
-                class="rounded-md"
+                class="rounded-md h-10"
                 bind:value={$form.email}
+                data-invalid={$errors.email}
+                {...$constraints.email}
             />
             {#if $errors.email}
                 <small class="text-red-600 text-sm">{$errors.email}</small>
@@ -44,8 +48,10 @@
                 id="name"
                 name="name"
                 placeholder="Your Name"
-                class="rounded-md"
+                class="rounded-md h-10"
                 bind:value={$form.name}
+                data-invalid={$errors.name}
+                {...$constraints.name}
             />
             {#if $errors.name}
                 <small class="text-red-600 text-sm">{$errors.name}</small>
@@ -58,8 +64,10 @@
                 id="username"
                 name="username"
                 placeholder="Your awesome username"
-                class="rounded-md"
+                class="rounded-md h-10"
                 bind:value={$form.username}
+                data-invalid={$errors.username}
+                {...$constraints.username}
             />
             {#if $errors.username}
                 <small class="text-red-600 text-sm">{$errors.username}</small>
@@ -72,8 +80,10 @@
                 id="password"
                 name="password"
                 placeholder="Your secret password 🤫"
-                class="rounded-md"
+                class="rounded-md h-10"
                 bind:value={$form.password}
+                data-invalid={$errors.password}
+                {...$constraints.password}
             />
             {#if $errors.password}
                 <small class="text-red-600 text-sm">{$errors.password}</small>
@@ -81,9 +91,15 @@
         </fieldset>
         <button
             type="submit"
-            class="rounded-md border border-purple-500 hover:bg-purple-500 hover:text-white p-2 transition-colors"
-            >Register</button
+            class="h-10 flex justify-center items-center rounded-md border border-purple-500 enabled:hover:bg-purple-500 enabled:hover:text-white p-2 transition-colors disabled:cursor-not-allowed"
+            disabled={$submitting}
         >
+            {#if $submitting}
+                <Loader2 class="h-6 w-6 animate-spin text-purple-500" />
+            {:else}
+                Register
+            {/if}
+        </button>
         <div class="flex justify-end items-center">
             <a href="/login" class="text-sm text-blue-800">Already have an account?</a>
         </div>

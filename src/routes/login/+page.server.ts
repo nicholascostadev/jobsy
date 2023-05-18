@@ -1,6 +1,7 @@
 import { auth } from '$lib/server/lucia.js';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { LuciaError } from 'lucia-auth';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -35,7 +36,18 @@ export const actions = {
             locals.setSession(session);
         } catch (err) {
             console.log({ err });
-            return fail(400, { message: "Couldn't login user." });
+
+            if (err instanceof LuciaError) {
+                if (
+                    err.message === 'AUTH_INVALID_KEY_ID' ||
+                    err.message === 'AUTH_INVALID_PASSWORD'
+                ) {
+                    setError(form, 'password', 'Username or password is incorrect.');
+                    return setError(form, 'username', 'Username or password is incorrect.');
+                }
+            }
+
+            return fail(400, { message: 'Something went wrong when trying to log in' });
         }
 
         throw redirect(302, '/');

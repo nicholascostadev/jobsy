@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { Loader2 } from 'lucide-svelte';
     import { superForm } from 'sveltekit-superforms/client';
     import { z } from 'zod';
 
@@ -9,9 +10,12 @@
         password: z.string().min(1, 'Password must have at least 1 character.')
     });
 
-    const { form, errors, constraints, enhance } = superForm(data.form, {
-        validators: schema
+    const { form, errors, constraints, enhance, submitting } = superForm(data.form, {
+        validators: schema,
+        clearOnSubmit: 'none'
     });
+
+    $: console.log($errors);
 </script>
 
 <main class="min-h-with-header flex justify-center items-center bg-gray-50">
@@ -28,8 +32,9 @@
                 id="username"
                 name="username"
                 placeholder="Your awesome username"
-                class="rounded-md"
+                class="rounded-md h-10"
                 bind:value={$form.username}
+                data-invalid={$errors.username}
                 {...$constraints.username}
             />
             {#if $errors.username}
@@ -43,8 +48,9 @@
                 id="password"
                 name="password"
                 placeholder="Your secret password 🤫"
-                class="rounded-md"
+                class="rounded-md h-10"
                 bind:value={$form.password}
+                data-invalid={$errors.password}
                 {...$constraints.password}
             />
             {#if $errors.password}
@@ -53,9 +59,14 @@
         </fieldset>
         <button
             type="submit"
-            class="rounded-md border border-purple-500 hover:bg-purple-500 hover:text-white p-2 transition-colors"
-            >Login</button
+            class="flex justify-center items-center rounded-md border border-purple-500 enabled:hover:bg-purple-500 enabled:hover:text-white p-2 transition-colors h-10 disabled:cursor-not-allowed"
         >
+            {#if submitting}
+                Login
+            {:else}
+                <Loader2 class="h-6 w-6 animate-spin text-purple-500" />
+            {/if}
+        </button>
         <div class="flex justify-end items-center">
             <a href="/register" class="text-sm text-blue-800">Don&apos;t have an account?</a>
         </div>

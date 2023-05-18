@@ -1,4 +1,6 @@
 import { prisma } from '$lib/server/prisma.js';
+import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
 export const GET = async ({ params, locals }) => {
     const session = await locals.validate();
@@ -17,6 +19,12 @@ export const GET = async ({ params, locals }) => {
             id
         }
     });
+
+    if (!post) {
+        return new Response(JSON.stringify({ message: 'Post not found.' }), { status: 404 });
+    }
+
+    post.description = sanitizeHtml(marked.parse(post.description));
 
     return new Response(JSON.stringify({ post }), { status: 200 });
 };

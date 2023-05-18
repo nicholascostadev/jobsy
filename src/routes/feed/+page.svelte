@@ -27,6 +27,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Feed</title>
+    <meta name="description" content="Find your best job here" />
+</svelte:head>
 <main class={cn('w-layout mx-auto max-w-full px-layout grid', selectedJobData && 'grid-cols-3')}>
     <div class="min-h-with-header border-x">
         {#if data}

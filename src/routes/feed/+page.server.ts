@@ -1,5 +1,7 @@
 import { prisma } from '$lib/server/prisma.js';
 import { redirect } from '@sveltejs/kit';
+import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
 export const load = async ({ locals }) => {
     const session = await locals.validate();
@@ -7,7 +9,12 @@ export const load = async ({ locals }) => {
         throw redirect(302, '/login');
     }
 
-    const jobPosts = await prisma.jobPost.findMany({});
+    let jobPosts = await prisma.jobPost.findMany({});
+
+    jobPosts = jobPosts.map((jobPost) => ({
+        ...jobPost,
+        description: sanitizeHtml(marked.parse(jobPost.description))
+    }));
 
     return {
         jobPosts

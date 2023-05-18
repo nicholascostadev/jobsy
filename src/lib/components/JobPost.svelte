@@ -2,12 +2,8 @@
     import { cn } from '$lib/utils';
     import type { JobPost } from '@prisma/client';
     import { createEventDispatcher } from 'svelte';
-    import { marked } from 'marked';
-    import sanitizeHtml from 'sanitize-html';
     export let hasJobSelected = false;
     export let job: JobPost;
-
-    $: description = sanitizeHtml(marked.parse(job.description));
 
     const dispatch = createEventDispatcher<{ 'job-selected': string }>();
 
@@ -26,6 +22,6 @@
         </a>
     </div>
     <div class={cn('leading-tight', hasJobSelected && 'line-clamp-3')}>
-        {@html description}
+        {@html job.description}
     </div>
 </div>

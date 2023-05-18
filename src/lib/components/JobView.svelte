@@ -33,7 +33,6 @@
 
 <div
     class="px-2 py-6 space-y-2 w-full col-span-2 border-l border-t scroll-auto"
-    tabIndex={0}
     aria-labelledby="title"
 >
     <div class="flex items-center justify-between">

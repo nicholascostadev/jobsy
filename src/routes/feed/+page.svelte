@@ -28,18 +28,20 @@
     <title>Feed</title>
     <meta name="description" content="Find your best job here" />
 </svelte:head>
-<main class="px-layout bg-gray-100">
-    <div
-        class={cn(
-            'h-with-header scroll-auto border-x grid w-layout mx-auto max-w-full bg-white',
-            selectedJobData && 'grid-cols-3'
-        )}
-    >
-        <div>
-            <JobList on:job-selected={handleJobSelect} />
+<main class="bg-gray-50">
+    <div class="w-layout px-layout mx-auto pt-10 pb-10 h-with-header">
+        <div
+            class={cn(
+                'scroll-auto border-x grid bg-white h-full',
+                selectedJobData && 'grid-cols-3'
+            )}
+        >
+            <div>
+                <JobList on:job-selected={handleJobSelect} />
+            </div>
+            {#if selectedJobData}
+                <JobView jobData={selectedJobData} />
+            {/if}
         </div>
-        {#if selectedJobData}
-            <JobView jobData={selectedJobData} />
-        {/if}
     </div>
 </main>

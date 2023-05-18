@@ -2,7 +2,7 @@
     import { ArrowRight } from 'lucide-svelte';
 </script>
 
-<main class="px-layout min-h-with-header md:px-layout-md">
+<main class="px-layout min-h-with-header md:px-layout-md bg-gray-50">
     <div class="h-[calc(100vh-450px)] grid grid-cols-1 md:grid-cols-2 place-items-center">
         <div class="max-w-2xl w-full flex flex-col gap-4 justify-start items-start">
             <div class="flex flex-col justify-start items-start gap-2">

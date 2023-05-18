@@ -14,10 +14,10 @@
     });
 </script>
 
-<main class="min-h-with-header flex justify-center items-center">
+<main class="min-h-with-header flex justify-center items-center bg-gray-50">
     <form
         method="POST"
-        class="flex flex-col gap-2 w-96 max-w-full border border-gray-200 rounded-md p-4 font-poppins"
+        class="bg-white flex flex-col gap-2 w-[450px] max-w-full border border-gray-200 rounded-md p-4 font-poppins"
         use:enhance
     >
         <h2 class="text-2xl mb-2 font-poppins">Get back to work</h2>

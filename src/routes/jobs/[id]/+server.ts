@@ -17,6 +17,9 @@ export const GET = async ({ params, locals }) => {
     const post = await prisma.jobPost.findUnique({
         where: {
             id
+        },
+        include: {
+            applicants: true
         }
     });
 

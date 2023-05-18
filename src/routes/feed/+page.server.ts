@@ -9,7 +9,11 @@ export const load = async ({ locals }) => {
         throw redirect(302, '/login');
     }
 
-    let jobPosts = await prisma.jobPost.findMany({});
+    let jobPosts = await prisma.jobPost.findMany({
+        include: {
+            applicants: true
+        }
+    });
 
     jobPosts = jobPosts.map((jobPost) => ({
         ...jobPost,

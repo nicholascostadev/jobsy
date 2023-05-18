@@ -1,13 +1,18 @@
 <script lang="ts">
     import { cn } from '$lib/utils';
+    import type { JobPost } from '@prisma/client';
     import { createEventDispatcher } from 'svelte';
-
+    import { marked } from 'marked';
+    import sanitizeHtml from 'sanitize-html';
     export let hasJobSelected = false;
+    export let job: JobPost;
 
-    const dispatch = createEventDispatcher<{ 'job-selected': number }>();
+    $: description = sanitizeHtml(marked.parse(job.description));
+
+    const dispatch = createEventDispatcher<{ 'job-selected': string }>();
 
     function handleJobSelect() {
-        dispatch('job-selected', 12);
+        dispatch('job-selected', job.id);
     }
 </script>
 
@@ -16,15 +21,11 @@
         <a href="/company">
             <img src="/job-logo-placeholder.webp" alt="Job logo" class="rounded-full w-12 h-12" />
         </a>
-        <a href="?postId=2" on:click={handleJobSelect}>
-            <h4 class="text-lg font-semibold">Job Title</h4>
+        <a href={`?postId=${job.id}`} on:click={handleJobSelect}>
+            <h4 class="text-lg font-semibold">{job.title}</h4>
         </a>
     </div>
-    <p class={cn('leading-tight', hasJobSelected && 'line-clamp-3')}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio facilis hic, maxime
-        natus placeat aut debitis, nemo sunt earum modi nobis quis rerum, quibusdam odio cumque iure
-        quod exercitationem ut. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
-        quasi accusantium dolorem laudantium! Molestias nemo quam inventore deleniti hic velit,
-        asperiores maiores rem, enim animi voluptatibus ut iste ullam qui...
-    </p>
+    <div class={cn('leading-tight', hasJobSelected && 'line-clamp-3')}>
+        {@html description}
+    </div>
 </div>

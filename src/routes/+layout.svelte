@@ -5,13 +5,14 @@
 </script>
 
 <header class="shadow-sm">
-    <nav class="h-header flex justify-between items-center px-layout w-layout max-w-full">
+    <nav class="h-header flex justify-between items-center px-layout w-layout mx-auto max-w-full">
         <a href="/" class="text-2xl font-semibold font-poppins">Jobsy</a>
 
         <div class="flex items-center justify-center gap-4">
             <a href="/#about" class="hover:text-gray-700 transition-colors">About Us</a>
             {#if data.user}
                 <a href="/feed">Jobs</a>
+                <a href="/jobs/create">Post a Job</a>
                 <form method="POST">
                     <button formaction="/logout" class="hover:text-gray-700" type="submit">
                         Logout

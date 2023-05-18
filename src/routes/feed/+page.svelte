@@ -1,31 +1,41 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import JobList from '$lib/components/JobList.svelte';
+    import JobPost from '$lib/components/JobPost.svelte';
     import JobView from '$lib/components/JobView.svelte';
     import { cn } from '$lib/utils';
 
-    let selectedJob: number | undefined;
+    export let data;
 
-    $: {
-        const url = new URL($page.url);
+    let selectedJob = data.post?.id;
+    let selectedJobData = data.post;
 
-        const postId = url.searchParams.get('postId');
+    async function getPostById(id: string) {
+        const res = await fetch(`/jobs/${id}`);
+        const data = await res.json();
 
-        if (postId) {
-            selectedJob = Number(postId);
-        }
+        selectedJobData = data.post;
+        selectedJob = id;
     }
 
-    function handleJobSelect({ detail }: CustomEvent<number>) {
+    function handleJobSelect({ detail }: CustomEvent<string>) {
         selectedJob = detail;
+        const postIdQuery = $page.url.searchParams.get('postId');
+
+        if (postIdQuery !== detail) {
+            getPostById(detail);
+        }
     }
 </script>
 
-<main class={cn('w-layout max-w-full px-layout grid', selectedJob && 'grid-cols-3')}>
+<main class={cn('w-layout mx-auto max-w-full px-layout grid', selectedJobData && 'grid-cols-3')}>
     <div class="min-h-with-header border-x">
-        <JobList on:job-selected={handleJobSelect} hasJobSelected={!!selectedJob} />
+        {#if data}
+            {#each data.jobPosts as job}
+                <JobPost on:job-selected={handleJobSelect} {job} hasJobSelected={!!selectedJob} />
+            {/each}
+        {/if}
     </div>
-    {#if selectedJob}
-        <JobView />
+    {#if selectedJobData}
+        <JobView jobData={selectedJobData} />
     {/if}
 </main>

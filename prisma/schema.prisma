@@ -49,7 +49,7 @@ model AuthKey {
 }
 
 model Aplicant {
-  id           String   @id @unique
+  id           String   @id @unique @default(uuid())
   job_post_id  String
   name         String
   username     String
@@ -65,7 +65,7 @@ model Aplicant {
 }
 
 model JobPost {
-  id           String     @id @unique
+  id           String     @id @unique @default(uuid())
   title        String
   description  String
   job_title    String

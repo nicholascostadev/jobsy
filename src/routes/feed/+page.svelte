@@ -1,13 +1,14 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import JobPost from '$lib/components/JobPost.svelte';
+    import JobList from '$lib/components/JobList.svelte';
     import JobView from '$lib/components/JobView.svelte';
     import { cn } from '$lib/utils';
+    import { tick } from 'svelte';
 
     export let data;
 
-    let selectedJob = data.post?.id;
-    let selectedJobData = data.post;
+    $: selectedJob = data.post?.id;
+    $: selectedJobData = data.post;
 
     async function getPostById(id: string) {
         const res = await fetch(`/jobs/${id}`);
@@ -17,11 +18,12 @@
         selectedJob = id;
     }
 
-    function handleJobSelect({ detail }: CustomEvent<string>) {
+    async function handleJobSelect({ detail }: CustomEvent<string | undefined>) {
         selectedJob = detail;
+
         const postIdQuery = $page.url.searchParams.get('postId');
 
-        if (postIdQuery !== detail) {
+        if (detail && postIdQuery !== detail) {
             getPostById(detail);
         }
     }
@@ -33,11 +35,7 @@
 </svelte:head>
 <main class={cn('w-layout mx-auto max-w-full px-layout grid', selectedJobData && 'grid-cols-3')}>
     <div class="min-h-with-header border-x">
-        {#if data}
-            {#each data.jobPosts as job}
-                <JobPost on:job-selected={handleJobSelect} {job} hasJobSelected={!!selectedJob} />
-            {/each}
-        {/if}
+        <JobList on:job-selected={handleJobSelect} />
     </div>
     {#if selectedJobData}
         <JobView jobData={selectedJobData} />

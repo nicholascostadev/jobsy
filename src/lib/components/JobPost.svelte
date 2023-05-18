@@ -34,7 +34,7 @@
         <a {href} data-sveltekit-keepfocus data-sveltekit-noscroll on:click={handleJobSelect}>
             <h4 class="text-lg font-semibold">{job.title}</h4>
 
-            <small class="text-sm">{formattedPostedAt}</small>
+            <small class="text-sm text-gray-600">{formattedPostedAt}</small>
         </a>
     </div>
     <div class={cn('leading-tight line-clamp-3')}>

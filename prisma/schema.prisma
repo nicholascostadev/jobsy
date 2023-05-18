@@ -19,6 +19,8 @@ model AuthUser {
   auth_key     AuthKey[]
   // here you can add custom fields for your user
   // e.g. name, email, username, roles, etc.
+  JobPost      JobPost[]
+  Aplicant     Aplicant[]
 
   @@map("auth_user")
 }
@@ -44,4 +46,34 @@ model AuthKey {
 
   @@index([user_id])
   @@map("auth_key")
+}
+
+model Aplicant {
+  id           String   @id @unique
+  job_post_id  String
+  name         String
+  username     String
+  email        String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  auth_user_id String
+
+  user    AuthUser @relation(fields: [auth_user_id], references: [id])
+  JobPost JobPost  @relation(fields: [job_post_id], references: [id])
+
+  @@unique([job_post_id, auth_user_id])
+}
+
+model JobPost {
+  id           String     @id @unique
+  title        String
+  description  String
+  job_title    String
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+  salary_start Int?
+  salary_end   Int?
+  author       AuthUser   @relation(fields: [auth_user_id], references: [id])
+  auth_user_id String
+  Aplicant     Aplicant[]
 }

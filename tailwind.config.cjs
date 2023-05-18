@@ -15,7 +15,8 @@ const config = {
                 header: 'var(--header-height)'
             },
             height: {
-                header: 'var(--header-height)'
+                header: 'var(--header-height)',
+                'with-header': 'calc(100vh - var(--header-height))'
             },
             minHeight: {
                 'with-header': 'calc(100vh - var(--header-height))'

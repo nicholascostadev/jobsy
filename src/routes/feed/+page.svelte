@@ -29,7 +29,7 @@
     <meta name="description" content="Find your best job here" />
 </svelte:head>
 <!-- min height = screen height - header height - padding-top from element below it -->
-<main class="bg-gray-50 min-h-[calc(100vh-var(--header-height)-40px)">
+<main class="bg-gray-50 main-height">
     <div class="w-layout max-w-full px-layout mx-auto pt-10 pb-10">
         <div
             class={cn(
@@ -48,3 +48,9 @@
         </div>
     </div>
 </main>
+
+<style>
+    .main-height {
+        min-height: calc(100vh - var(--header-height) - 80px);
+    }
+</style>

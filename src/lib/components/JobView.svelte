@@ -62,20 +62,22 @@
 
     <div class="prose prose-purple">{@html jobData.description}</div>
 
-    <form method="POST" action="/feed?/apply" use:enhance={handleSubmit}>
-        <input type="hidden" name="jobId" value={jobData.id} />
-        <button
-            class="flex justify-center items-center rounded-md border border-purple-500 enabled:hover:bg-purple-500 enabled:hover:text-white p-2 transition-colors h-10 disabled:cursor-not-allowed"
-            disabled={userOwnsPost || isApplied || isApplying}
-            type="submit"
-        >
-            {#if isApplied}
-                Applied
-            {:else if isApplying}
-                <Loader2 class="h-6 w-6 animate-spin text-purple-500" />
-            {:else}
-                Apply for Job
-            {/if}
-        </button>
-    </form>
+    {#if !userOwnsPost}
+        <form method="POST" action="/feed?/apply" use:enhance={handleSubmit}>
+            <input type="hidden" name="jobId" value={jobData.id} />
+            <button
+                class="flex justify-center items-center rounded-md border border-purple-500 enabled:hover:bg-purple-500 enabled:hover:text-white p-2 transition-colors h-10 disabled:cursor-not-allowed"
+                disabled={isApplied || isApplying}
+                type="submit"
+            >
+                {#if isApplied}
+                    Applied
+                {:else if isApplying}
+                    <Loader2 class="h-6 w-6 animate-spin text-purple-500" />
+                {:else}
+                    Apply for Job
+                {/if}
+            </button>
+        </form>
+    {/if}
 </div>

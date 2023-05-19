@@ -14,8 +14,6 @@
         validators: schema,
         clearOnSubmit: 'none'
     });
-
-    $: console.log($errors);
 </script>
 
 <main class="min-h-with-header flex justify-center items-center bg-gray-50">

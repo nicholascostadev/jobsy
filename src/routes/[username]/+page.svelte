@@ -2,6 +2,8 @@
     export let data;
 
     let amount = new Array(3).fill(0);
+
+    $: userOwnsProfile = data.foundUser?.username === data.user?.username;
 </script>
 
 <main>

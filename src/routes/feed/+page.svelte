@@ -29,18 +29,20 @@
     <meta name="description" content="Find your best job here" />
 </svelte:head>
 <main class="bg-gray-50">
-    <div class="w-layout px-layout mx-auto pt-10 pb-10 h-with-header">
+    <div class="w-layout max-w-full px-layout mx-auto pt-10 pb-10 h-with-header">
         <div
             class={cn(
                 'scroll-auto border-x grid bg-white h-full',
-                selectedJobData && 'grid-cols-3'
+                selectedJobData && 'grid-cols-1 md:grid-cols-3'
             )}
         >
             <div>
-                <JobList on:job-selected={handleJobSelect} />
+                <JobList on:job-selected={handleJobSelect} {selectedJobData} />
             </div>
             {#if selectedJobData}
-                <JobView jobData={selectedJobData} />
+                <div class="hidden md:block">
+                    <JobView jobData={selectedJobData} />
+                </div>
             {/if}
         </div>
     </div>

@@ -27,6 +27,11 @@
                     Login
                 </a>
             {/if}
+            <a
+                href="/{data.user?.username}"
+                class="bg-gray-400 w-10 h-10 rounded-full"
+                aria-label="Go to profile"
+            />
         </div>
     </nav>
 </header>

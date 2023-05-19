@@ -1,5 +1,18 @@
 <script>
+    import { Menu } from 'lucide-svelte';
+    import Drawer from './Drawer.svelte';
+    import { cn } from '$lib/utils';
     import { page } from '$app/stores';
+
+    let drawerOpen = false;
+
+    function openDrawer() {
+        drawerOpen = true;
+    }
+
+    function closeDrawer() {
+        drawerOpen = false;
+    }
 </script>
 
 <header class="shadow-sm">
@@ -7,15 +20,26 @@
         <a href="/" class="text-2xl font-semibold font-poppins">Jobsy</a>
 
         <div class="flex items-center justify-center gap-4">
-            <a href="/#about" class="hover:text-gray-700 transition-colors">About Us</a>
+            <a
+                href="/#about"
+                class={cn(
+                    'hover:text-gray-700 transition-colors',
+                    $page.route.id !== '/' && 'hidden'
+                )}>About Us</a
+            >
             {#if $page.data.user}
                 <a href="/feed">Jobs</a>
-                <a href="/jobs/create">Post a Job</a>
-                <form method="POST">
+                <a href="/jobs/create" class="hidden md:block">Post a Job</a>
+                <form method="POST" class="hidden md:block">
                     <button formaction="/logout" class="hover:text-gray-700" type="submit">
                         Logout
                     </button>
                 </form>
+                <a
+                    href="/{$page.data.user?.username}"
+                    class="bg-gray-400 w-10 h-10 rounded-full"
+                    aria-label="Go to profile"
+                />
             {/if}
             {#if !$page.data.user}
                 <a
@@ -25,11 +49,44 @@
                     Login
                 </a>
             {/if}
-            <a
-                href="/{$page.data.user?.username}"
-                class="bg-gray-400 w-10 h-10 rounded-full"
-                aria-label="Go to profile"
-            />
+            <button on:click={openDrawer} aria-label="Open Drawer">
+                <Menu class="w-6 h-6" />
+            </button>
         </div>
     </nav>
 </header>
+
+{#if drawerOpen}
+    <Drawer on:close={closeDrawer}>
+        <div class="flex flex-col items-start justify-center gap-4">
+            <a
+                href="/#about"
+                class="hover:text-gray-700 transition-colors text-lg"
+                on:click={closeDrawer}>About Us</a
+            >
+            {#if $page.data.user}
+                <a href="/feed" class="text-lg" on:click={closeDrawer}>Jobs</a>
+                <a href="/jobs/create" class="text-lg" on:click={closeDrawer}>Post a Job</a>
+                <form method="POST">
+                    <button
+                        formaction="/logout"
+                        class="hover:text-gray-700 text-lg"
+                        type="submit"
+                        on:click={closeDrawer}
+                    >
+                        Logout
+                    </button>
+                </form>
+            {/if}
+            {#if !$page.data.user}
+                <a
+                    href="/login"
+                    class="text-lg bg-purple-500 rounded-full px-3 py-1 text-white hover:bg-purple-600 transition-colors"
+                    on:click={closeDrawer}
+                >
+                    Login
+                </a>
+            {/if}
+        </div>
+    </Drawer>
+{/if}

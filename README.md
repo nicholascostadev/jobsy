@@ -1,38 +1,46 @@
-# create-svelte
+### Jobsy (_UNDER DEVELOPMENT_)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+A job searching platform
 
-## Creating a project
+---
 
-If you're seeing this, you've probably already done this step. Congrats!
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+### Technologies Used
 
-# create a new project in my-app
-npm create svelte@latest my-app
+1. [Sveltekit](https://kit.svelte.dev/)
+2. [Prisma](https://www.prisma.io/)
+3. [Lucia-auth](https://lucia-auth.com/)
+4. [TailwindCSS](https://tailwindcss.com/)
+
+### How to run it locally
+
+If you want to run this project locally, you can follow the steps shown below.
+
+
+#### Prerequisites
+
+1. Node
+2. pnpm
+
+#### Commands
+
+_ps_: The project uses SQLite for the database locally, if you want to use another DB, it's easy, follow the prisma docs or your database provider docs for the integration.
+
+```sh
+# Copy the environment variables and update them as you need
+cp .env.example .env
+
+# Install the dependencies
+pnpm install
+
+# Initialize the DB
+pnpx prisma db push
+
+# Generate your Prisma types
+pnpx prisma generate
+
+# Probably restart your TypeScript LSP
+
+# Start the development server
+pnpm run dev
 ```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.

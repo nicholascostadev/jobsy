@@ -32,7 +32,7 @@
                 id="email"
                 name="email"
                 placeholder="Your email"
-                class="rounded-md h-10"
+                class="rounded-md h-10 w-full"
                 bind:value={$form.email}
                 data-invalid={$errors.email}
                 {...$constraints.email}
@@ -48,7 +48,7 @@
                 id="name"
                 name="name"
                 placeholder="Your Name"
-                class="rounded-md h-10"
+                class="rounded-md h-10 w-full"
                 bind:value={$form.name}
                 data-invalid={$errors.name}
                 {...$constraints.name}
@@ -64,7 +64,7 @@
                 id="username"
                 name="username"
                 placeholder="Your awesome username"
-                class="rounded-md h-10"
+                class="rounded-md h-10 w-full"
                 bind:value={$form.username}
                 data-invalid={$errors.username}
                 {...$constraints.username}
@@ -80,7 +80,7 @@
                 id="password"
                 name="password"
                 placeholder="Your secret password 🤫"
-                class="rounded-md h-10"
+                class="rounded-md h-10 w-full"
                 bind:value={$form.password}
                 data-invalid={$errors.password}
                 {...$constraints.password}

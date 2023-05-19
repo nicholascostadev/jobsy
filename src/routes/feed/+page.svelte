@@ -28,8 +28,9 @@
     <title>Feed</title>
     <meta name="description" content="Find your best job here" />
 </svelte:head>
-<main class="bg-gray-50">
-    <div class="w-layout max-w-full px-layout mx-auto pt-10 pb-10 h-with-header">
+<!-- min height = screen height - header height - padding-top from element below it -->
+<main class="bg-gray-50 min-h-[calc(100vh-var(--header-height)-40px)">
+    <div class="w-layout max-w-full px-layout mx-auto pt-10 pb-10">
         <div
             class={cn(
                 'scroll-auto border-x grid bg-white h-full',
@@ -40,7 +41,7 @@
                 <JobList on:job-selected={handleJobSelect} {selectedJobData} />
             </div>
             {#if selectedJobData}
-                <div class="hidden md:block">
+                <div class="hidden md:block col-span-2">
                     <JobView jobData={selectedJobData} />
                 </div>
             {/if}

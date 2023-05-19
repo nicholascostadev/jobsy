@@ -16,7 +16,9 @@
         <li>
             <JobPost on:job-selected {job} />
             {#if selectedJobData && selectedJobData.id === job.id}
-                <JobView jobData={selectedJobData} />
+                <div class="block md:hidden">
+                    <JobView jobData={selectedJobData} />
+                </div>
             {/if}
         </li>
     {/each}

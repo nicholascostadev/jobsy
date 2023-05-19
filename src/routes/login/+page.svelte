@@ -30,7 +30,7 @@
                 id="username"
                 name="username"
                 placeholder="Your awesome username"
-                class="rounded-md h-10"
+                class="rounded-md h-10 w-full"
                 bind:value={$form.username}
                 data-invalid={$errors.username}
                 {...$constraints.username}
@@ -46,7 +46,7 @@
                 id="password"
                 name="password"
                 placeholder="Your secret password 🤫"
-                class="rounded-md h-10"
+                class="rounded-md h-10 w-full"
                 bind:value={$form.password}
                 data-invalid={$errors.password}
                 {...$constraints.password}

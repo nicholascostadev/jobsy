@@ -48,7 +48,7 @@
 </script>
 
 <div
-    class="px-2 py-6 space-y-2 w-full col-span-2 md:border-l border-t scroll-auto border-gray-100 md:border-t-gray-200"
+    class="px-2 py-6 space-y-2 w-full h-full md:border-b md:border-l border-t scroll-auto border-gray-100 md:border-t-gray-200"
     aria-labelledby="title"
 >
     <div class="flex items-center justify-between">

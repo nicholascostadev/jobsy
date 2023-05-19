@@ -1,13 +1,22 @@
 <script lang="ts">
+    import { enhance, type SubmitFunction } from '$app/forms';
     import { page } from '$app/stores';
     import type { Applicant, JobPost } from '@prisma/client';
+    import { Loader2 } from 'lucide-svelte';
 
     // copy-paste from src/routes/jobs/[id] response type
     export let jobData: JobPost & {
         applicants: Applicant[];
     };
 
+    $: isApplying = false;
+    $: isApplied = jobData.applicants.some(
+        (applicant) => applicant.auth_user_id === $page.data.user.userId
+    );
     $: userOwnsPost = $page.data.user.userId === jobData.auth_user_id;
+
+    $: console.log({ jobData });
+
     $: formattedPostedAt = new Intl.DateTimeFormat('en-US', {
         day: '2-digit',
         month: 'long',
@@ -29,6 +38,15 @@
             applicantsText = `${applicants} applicants total.`;
         }
     }
+
+    const handleSubmit: SubmitFunction = ({}) => {
+        isApplying = true;
+        return async ({ update }) => {
+            await update();
+            isApplying = false;
+            isApplied = true;
+        };
+    };
 </script>
 
 <div
@@ -46,10 +64,20 @@
 
     <div class="prose prose-purple">{@html jobData.description}</div>
 
-    <button
-        class="border border-purple-500 enabled:hover:bg-purple-500 enabled:hover:text-white disabled:cursor-not-allowed px-2 py-1 rounded-md transition-colors"
-        disabled={userOwnsPost}
-    >
-        Apply For Job
-    </button>
+    <form method="POST" action="/feed?/apply" use:enhance={handleSubmit}>
+        <input type="hidden" name="jobId" value={jobData.id} />
+        <button
+            class="flex justify-center items-center rounded-md border border-purple-500 enabled:hover:bg-purple-500 enabled:hover:text-white p-2 transition-colors h-10 disabled:cursor-not-allowed"
+            disabled={userOwnsPost || isApplied || isApplying}
+            type="submit"
+        >
+            {#if isApplied}
+                Applied
+            {:else if isApplying}
+                <Loader2 class="h-6 w-6 animate-spin text-purple-500" />
+            {:else}
+                Apply for Job
+            {/if}
+        </button>
+    </form>
 </div>

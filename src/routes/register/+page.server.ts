@@ -2,10 +2,11 @@ import { auth } from '$lib/server/lucia.js';
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
+import { nameSchema, usernameSchema } from '$lib/server/schemas.js';
 
 const schema = z.object({
-    name: z.string().min(2, 'Name must have at least 2 characters.'),
-    username: z.string().min(3, 'Username must have at least 3 characters.'),
+    name: nameSchema,
+    username: usernameSchema,
     email: z.string().email('Invalid email.'),
     password: z.string().min(5, 'Password must have at least 5 characters.')
 });

@@ -15,6 +15,7 @@ model AuthUser {
   name         String
   username     String        @unique
   email        String        @unique
+  bio          String?
   auth_session AuthSession[]
   auth_key     AuthKey[]
   // here you can add custom fields for your user

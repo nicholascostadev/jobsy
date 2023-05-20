@@ -49,7 +49,7 @@
                     Login
                 </a>
             {/if}
-            <button on:click={openDrawer} aria-label="Open Drawer">
+            <button on:click={openDrawer} aria-label="Open Drawer" class="block md:hidden">
                 <Menu class="w-6 h-6" />
             </button>
         </div>

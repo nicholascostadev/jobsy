@@ -37,7 +37,7 @@
         }
     }
 
-    const handleSubmit: SubmitFunction = ({}) => {
+    const handleSubmit: SubmitFunction = () => {
         isApplying = true;
         return async ({ update }) => {
             await update();
@@ -51,9 +51,9 @@
     class="px-2 py-6 space-y-2 w-full h-full md:border-b md:border-l border-t scroll-auto border-gray-100 md:border-t-gray-200"
     aria-labelledby="title"
 >
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between">
         <div>
-            <h2 class="text-4xl font-semibold" id="title">{jobData.title}</h2>
+            <h2 class="text-3xl md:text-4xl font-semibold" id="title">{jobData.title}</h2>
             <small class="text-sm">{applicantsText}</small>
         </div>
 

@@ -6,7 +6,7 @@
 <script lang="ts">
     import { enhance, type SubmitFunction } from '$app/forms';
     import { page } from '$app/stores';
-    import { clickOutside } from '$lib/clickOutside';
+    import { clickOutside } from '$lib/actions/clickOutside';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
 

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { enhance, type SubmitFunction } from '$app/forms';
     import { page } from '$app/stores';
+    import { clickOutside } from '$lib/actions/clickOutside';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
     import { tick } from 'svelte';
@@ -26,6 +27,13 @@
     let amount = new Array(3).fill(0);
     let isEditing = false;
 
+    function stopEditing() {
+        bio = $page.data.foundUser?.bio;
+        name = $page.data.foundUser?.name;
+        isEditing = false;
+        editButton.focus();
+    }
+
     async function toggleEditing() {
         if (isEditing) {
             bio = $page.data.foundUser?.bio;
@@ -42,8 +50,7 @@
 
     function handleKeydown(event: KeyboardEvent) {
         if (event.key === 'Escape') {
-            isEditing = false;
-            editButton.focus();
+            stopEditing();
         }
     }
 
@@ -70,6 +77,7 @@
         method="POST"
         action="?/updateProfile"
         use:enhance={handleSubmit}
+        use:clickOutside={stopEditing}
         on:keydown={handleKeydown}
     >
         <div class="flex items-start justify-between">

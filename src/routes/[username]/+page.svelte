@@ -1,10 +1,11 @@
 <script lang="ts">
+    import ProfileBackground from './ProfileBackground.svelte';
     import ProfileHeader from './ProfileHeader.svelte';
     import ProfileSection from './ProfileSection.svelte';
 </script>
 
 <main>
-    <div class="bg-purple-300 w-full h-96" />
+    <ProfileBackground class="bg-purple-300" />
     <div class="w-layout mx-auto px-layout max-w-full pb-10">
         <ProfileHeader />
 

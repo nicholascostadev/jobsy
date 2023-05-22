@@ -1,5 +1,6 @@
 <script lang="ts">
     import ProfileHeader from './ProfileHeader.svelte';
+    import ProfileSection from './ProfileSection.svelte';
 </script>
 
 <main>
@@ -8,9 +9,21 @@
         <ProfileHeader />
 
         <div class="mt-12 flex flex-col gap-4">
-            <div class="w-full h-56 bg-gray-400 rounded-md" />
-            <div class="w-full h-56 bg-gray-400 rounded-md" />
-            <div class="w-full h-56 bg-gray-400 rounded-md" />
+            <ProfileSection title="About">
+                <p>Hello World</p>
+            </ProfileSection>
+            <ProfileSection
+                title="Experiences"
+                subTitle="Places I've worked at and lives I've touched."
+            >
+                <p>Hello World</p>
+            </ProfileSection>
+            <ProfileSection title="Certificates">
+                <p>Hello World</p>
+            </ProfileSection>
+            <ProfileSection title="Education">
+                <p>Hello World</p>
+            </ProfileSection>
         </div>
     </div>
 </main>

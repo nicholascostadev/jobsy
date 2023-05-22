@@ -19,10 +19,9 @@ model AuthUser {
   thumbnailColor String        @default("purple")
   auth_session   AuthSession[]
   auth_key       AuthKey[]
-  // here you can add custom fields for your user
-  // e.g. name, email, username, roles, etc.
   JobPost        JobPost[]
   Applicant      Applicant[]
+  ProfileLink    ProfileLink[]
 
   @@map("auth_user")
 }
@@ -78,4 +77,14 @@ model JobPost {
   author       AuthUser    @relation(fields: [auth_user_id], references: [id])
   auth_user_id String
   applicants   Applicant[]
+}
+
+model ProfileLink {
+  id           String   @id @unique @default(uuid())
+  auth_user    AuthUser @relation(fields: [auth_user_id], references: [id])
+  auth_user_id String
+  name         String
+  url          String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 }

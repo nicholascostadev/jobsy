@@ -11,17 +11,18 @@ datasource db {
 }
 
 model AuthUser {
-  id           String        @id @unique
-  name         String
-  username     String        @unique
-  email        String        @unique
-  bio          String?
-  auth_session AuthSession[]
-  auth_key     AuthKey[]
+  id             String        @id @unique
+  name           String
+  username       String        @unique
+  email          String        @unique
+  bio            String?
+  thumbnailColor String        @default("purple")
+  auth_session   AuthSession[]
+  auth_key       AuthKey[]
   // here you can add custom fields for your user
   // e.g. name, email, username, roles, etc.
-  JobPost      JobPost[]
-  Applicant    Applicant[]
+  JobPost        JobPost[]
+  Applicant      Applicant[]
 
   @@map("auth_user")
 }

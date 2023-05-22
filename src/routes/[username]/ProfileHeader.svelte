@@ -1,6 +1,7 @@
 <script lang="ts">
     import { enhance, type SubmitFunction } from '$app/forms';
     import { page } from '$app/stores';
+    import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
     import { tick } from 'svelte';
 
@@ -10,6 +11,17 @@
     let bio = $page.data.foundUser?.bio;
     let name = $page.data.foundUser?.name;
     $: userOwnsProfile = $page.data.foundUser?.username === $page.data.user?.username;
+
+    let colors = {
+        purple: 'border-purple-300',
+        red: 'border-red-300',
+        blue: 'border-blue-300',
+        green: 'border-green-300',
+        yellow: 'border-yellow-300',
+        gray: 'border-gray-300'
+    };
+
+    $: thumbnailColor = $page.data.foundUser?.thumbnailColor as keyof typeof colors;
 
     let amount = new Array(3).fill(0);
     let isEditing = false;
@@ -46,8 +58,13 @@
     };
 </script>
 
-<div class="flex flex-col md:flex-row items-start justify-start gap-4 -mt-12">
-    <div class="rounded-full w-40 h-40 md:w-52 md:h-52 bg-gray-500 border-purple-300 border-2" />
+<div class="flex flex-col md:flex-row items-start justify-start gap-4">
+    <div
+        class={cn(
+            'rounded-full w-40 h-40 md:w-52 md:h-52 bg-gray-500 border-2',
+            colors[thumbnailColor]
+        )}
+    />
     <form
         class="flex-1 md:pt-14"
         method="POST"

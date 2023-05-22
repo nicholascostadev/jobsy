@@ -1,5 +1,5 @@
 import { prisma } from '$lib/server/prisma.js';
-import { bioSchema, nameSchema } from '$lib/server/schemas.js';
+import { bioSchema, nameSchema, thumbnailColorSchema } from '$lib/server/schemas.js';
 import { fail } from '@sveltejs/kit';
 
 export const load = async ({ params }) => {
@@ -54,6 +54,42 @@ export const actions = {
             });
         } catch (err) {
             return fail(400, { message: "Couldn't update profile." });
+        }
+    },
+    updateThumbnailColor: async ({ params, request, locals }) => {
+        const { user, session } = await locals.validateUser();
+
+        if (!session) {
+            return fail(401, { message: 'Unauthorized' });
+        }
+
+        const urlUsername = params.username;
+
+        if (user.username !== urlUsername) {
+            return fail(403, { message: 'Forbidden' });
+        }
+
+        const formData = await request.formData();
+
+        const selectedColor = formData.get('selectedColor');
+
+        const result = thumbnailColorSchema.safeParse(selectedColor);
+
+        if (!result.success) {
+            return fail(400, { message: 'Invalid color.' });
+        }
+
+        try {
+            await prisma.authUser.update({
+                where: {
+                    id: user.userId
+                },
+                data: {
+                    thumbnailColor: result.data
+                }
+            });
+        } catch (err) {
+            return fail(400, { message: "Couldn't update thumbnail color." });
         }
     }
 };

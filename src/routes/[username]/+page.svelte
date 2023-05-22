@@ -5,8 +5,8 @@
 </script>
 
 <main>
-    <ProfileBackground class="bg-purple-300" />
-    <div class="w-layout mx-auto px-layout max-w-full pb-10">
+    <ProfileBackground />
+    <div class="w-layout mx-auto px-layout max-w-full pb-10 z-10 flex flex-col -mt-12 relative">
         <ProfileHeader />
 
         <div class="mt-12 flex flex-col gap-4">

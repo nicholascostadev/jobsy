@@ -22,8 +22,8 @@
         gray: 'bg-gray-300'
     };
 
-    let selectedColor: keyof typeof colors = $page.data.foundUser?.thumbnailColor;
     $: hasSelectedAnotherColor = selectedColor !== $page.data.foundUser?.thumbnailColor;
+    $: selectedColor = $page.data.foundUser?.thumbnailColor as keyof typeof colors;
 
     function cancelEditing() {
         isEditing = false;
@@ -103,5 +103,5 @@
         {/if}
     </form>
 {:else}
-    <div class="w-full h-96 bg-purple-300" />
+    <div class={cn('w-full h-96 group relative', colors[selectedColor])} />
 {/if}

@@ -15,13 +15,15 @@
     const linksStart: Record<(typeof possibleLinks)[number], string> = {
         github: 'github.com/',
         twitter: 'twitter.com/',
-        instagram: 'instagram.com/'
+        instagram: 'instagram.com/',
+        website: ''
     };
 
     const linksPadding: Record<(typeof possibleLinks)[number], string> = {
         github: 'pl-[120px]',
         twitter: 'pl-[120px]',
-        instagram: 'pl-[150px]'
+        instagram: 'pl-[150px]',
+        website: 'pl-0'
     };
 </script>
 
@@ -67,18 +69,22 @@
                         <option value={link}>{link}</option>
                     {/each}
                 </select>
-                <label for="link-identifier">Link Identifier</label>
+                <label for="link-identifier">
+                    {selectedLinkName !== 'website' ? 'Link Identifier' : 'Your website'}
+                </label>
                 <div class="relative py-2">
-                    <span
-                        class="pointer-events-none absolute z-10 text-lg leading-6 border px-2 rounded-md bg-purple-400/20"
-                    >
-                        {linksStart[selectedLinkName]}
-                    </span>
+                    {#if selectedLinkName !== 'website'}
+                        <span
+                            class="pointer-events-none absolute z-10 text-lg leading-6 border px-2 rounded-md bg-purple-400/20"
+                        >
+                            {linksStart[selectedLinkName]}
+                        </span>
+                    {/if}
                     <input
                         type="text"
                         id="link-identifier"
                         name="link-identifier"
-                        placeholder="identifier"
+                        placeholder={selectedLinkName !== 'website' ? 'identifier' : 'Your website'}
                         class={cn(
                             'py-0 rounded-md border-0 focus:border-0 focus:ring-0 w-full leading-6 text-lg',
                             linksPadding[selectedLinkName]

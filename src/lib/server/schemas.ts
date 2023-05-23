@@ -14,4 +14,4 @@ export const bioSchema = z.string().max(160, 'Bio must have at most 160 characte
 
 export const thumbnailColorSchema = z.enum(['purple', 'red', 'blue', 'green', 'yellow', 'gray']);
 
-export const linkNameSchema = z.enum(['github', 'twitter', 'instagram']);
+export const linkNameSchema = z.enum(['github', 'twitter', 'instagram', 'website']);

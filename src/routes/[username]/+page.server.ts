@@ -135,6 +135,28 @@ export const actions = {
         const linkIdentifierValue = identifierResult.data;
 
         try {
+            if (linkNameValue === 'website') {
+                const safeLinkResult = z
+                    .string()
+                    .startsWith('https://')
+                    .url()
+                    .safeParse(linkIdentifierValue);
+
+                if (!safeLinkResult.success) {
+                    return fail(400, { message: 'Invalid link identifier, should be HTTPS.' });
+                }
+
+                await prisma.profileLink.create({
+                    data: {
+                        name: linkNameValue,
+                        url: linkIdentifierValue,
+                        auth_user_id: user.userId
+                    }
+                });
+
+                return;
+            }
+
             await prisma.profileLink.create({
                 data: {
                     name: linkNameValue,

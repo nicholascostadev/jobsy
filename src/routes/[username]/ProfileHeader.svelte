@@ -3,7 +3,7 @@
     import { page } from '$app/stores';
     import { clickOutside } from '$lib/actions/clickOutside';
     import { cn } from '$lib/utils';
-    import { Edit, Plus, X } from 'lucide-svelte';
+    import { Edit, X } from 'lucide-svelte';
     import { tick } from 'svelte';
     import ProfileLinks from './ProfileLinks.svelte';
     import { escape } from '$lib/actions/escape';
@@ -11,8 +11,8 @@
     let editButton: HTMLButtonElement;
     let nameInput: HTMLInputElement;
 
-    let bio = $page.data.foundUser?.bio;
-    let name = $page.data.foundUser?.name;
+    $: bio = $page.data.foundUser?.bio;
+    $: name = $page.data.foundUser?.name;
     $: userOwnsProfile = $page.data.foundUser?.username === $page.data.user?.username;
 
     let colors = {

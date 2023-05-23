@@ -1,11 +1,11 @@
 <script context="module">
-    export const possibleLinks = ['github', 'twitter', 'instagram'];
+    export const possibleLinks = ['github', 'twitter', 'instagram', 'website'];
 </script>
 
 <script lang="ts">
     import { page } from '$app/stores';
     import Modal from '$lib/components/Modal.svelte';
-    import { Edit, Pencil, Plus } from 'lucide-svelte';
+    import { Pencil, Plus } from 'lucide-svelte';
     import LinkModal from './LinkModal.svelte';
 
     let modalOpen = false;

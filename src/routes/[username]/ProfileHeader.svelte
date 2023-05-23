@@ -3,8 +3,9 @@
     import { page } from '$app/stores';
     import { clickOutside } from '$lib/actions/clickOutside';
     import { cn } from '$lib/utils';
-    import { Edit, X } from 'lucide-svelte';
+    import { Edit, Plus, X } from 'lucide-svelte';
     import { tick } from 'svelte';
+    import ProfileLinks from './ProfileLinks.svelte';
 
     let editButton: HTMLButtonElement;
     let nameInput: HTMLInputElement;
@@ -24,7 +25,6 @@
 
     $: thumbnailColor = $page.data.foundUser?.thumbnailColor as keyof typeof colors;
 
-    let amount = new Array(3).fill(0);
     let isEditing = false;
 
     function stopEditing() {
@@ -139,10 +139,6 @@
             </div>
         {/if}
 
-        <div class="mt-2 flex items-center justify-start gap-2">
-            {#each amount as item}
-                <div class="w-8 h-8 rounded-md bg-purple-400" />
-            {/each}
-        </div>
+        <ProfileLinks />
     </form>
 </div>

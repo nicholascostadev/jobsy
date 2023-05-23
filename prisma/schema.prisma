@@ -19,9 +19,9 @@ model AuthUser {
   thumbnailColor String        @default("purple")
   auth_session   AuthSession[]
   auth_key       AuthKey[]
-  JobPost        JobPost[]
-  Applicant      Applicant[]
-  ProfileLink    ProfileLink[]
+  job_post       JobPost[]
+  applicant      Applicant[]
+  profile_links  ProfileLink[]
 
   @@map("auth_user")
 }

@@ -6,6 +6,7 @@
     import { Edit, Plus, X } from 'lucide-svelte';
     import { tick } from 'svelte';
     import ProfileLinks from './ProfileLinks.svelte';
+    import { escape } from '$lib/actions/escape';
 
     let editButton: HTMLButtonElement;
     let nameInput: HTMLInputElement;
@@ -48,12 +49,6 @@
         }
     }
 
-    function handleKeydown(event: KeyboardEvent) {
-        if (event.key === 'Escape') {
-            stopEditing();
-        }
-    }
-
     const handleSubmit: SubmitFunction = async () => {
         return async ({ update }) => {
             await update();
@@ -78,7 +73,7 @@
         action="?/updateProfile"
         use:enhance={handleSubmit}
         use:clickOutside={stopEditing}
-        on:keydown={handleKeydown}
+        use:escape={stopEditing}
     >
         <div class="flex items-start justify-between">
             <div>

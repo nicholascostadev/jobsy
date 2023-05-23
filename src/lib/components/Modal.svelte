@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { clickOutside } from '$lib/actions/clickOutside';
+    import { escape } from '$lib/actions/escape';
     import { trapFocus } from '$lib/actions/trapFocus';
     import { X } from 'lucide-svelte';
     import { createEventDispatcher, onDestroy, onMount } from 'svelte';
@@ -6,7 +8,7 @@
 
     const dispatch = createEventDispatcher();
 
-    function closeDrawer() {
+    function closeModal() {
         dispatch('close');
     }
 
@@ -32,12 +34,14 @@
     in:scale={{ start: 0.9, duration: 300 }}
     out:scale={{ start: 0.9, duration: 300 }}
     use:trapFocus
+    use:escape={closeModal}
+    use:clickOutside={closeModal}
 >
     <div class="absolute top-8 w-full flex justify-between items-center">
         <button
             class="absolute right-8"
             aria-label="Close Modal"
-            on:click={closeDrawer}
+            on:click={closeModal}
             type="button"
         >
             <X class="h-6 w-6" />

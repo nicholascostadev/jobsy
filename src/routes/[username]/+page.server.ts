@@ -6,17 +6,27 @@ import {
     thumbnailColorSchema
 } from '$lib/server/schemas.js';
 import { fail } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
+import { addSectionSchema } from './validations.js';
 
 export const load = async ({ params }) => {
     const requestedUsername = params.username;
+    const addSectionForm = await superValidate(addSectionSchema, {
+        id: 'addSection'
+    });
 
     const foundUser = await prisma.authUser.findUnique({
         where: {
             username: requestedUsername
         },
         include: {
-            profile_links: true
+            profile_links: true,
+            profile_sections: {
+                include: {
+                    experiences: true
+                }
+            }
         }
     });
 
@@ -25,7 +35,8 @@ export const load = async ({ params }) => {
     }
 
     return {
-        foundUser
+        foundUser,
+        addSectionForm
     };
 };
 
@@ -201,6 +212,62 @@ export const actions = {
         } catch (err) {
             console.log({ err });
             return fail(400, { message: "Couldn't delete link." });
+        }
+    },
+    addSection: async ({ locals, request }) => {
+        const { user, session } = await locals.validateUser();
+        const { data } = await superValidate(request, addSectionSchema, {
+            id: 'addSection'
+        });
+
+        if (!session) {
+            return fail(400, { message: "Couldn't add section." });
+        }
+
+        try {
+            await prisma.authUser.update({
+                where: {
+                    username: user.username
+                },
+                data: {
+                    profile_sections: {
+                        upsert: {
+                            create: {
+                                experiences: {
+                                    create: {
+                                        job_title: data.jobTitle,
+                                        job_company: data.jobCompany,
+                                        job_description: data.jobDescription,
+                                        job_start_date: data.jobStartDate,
+                                        job_end_date: data.jobEndDate,
+                                        job_ongoing: data.onGoing ?? false,
+                                        auth_user_id: user.userId
+                                    }
+                                },
+                                auth_user_id: user.userId
+                            },
+                            update: {
+                                experiences: {
+                                    create: {
+                                        job_title: data.jobTitle,
+                                        job_company: data.jobCompany,
+                                        job_description: data.jobDescription,
+                                        job_start_date: data.jobStartDate,
+                                        job_end_date: data.jobEndDate,
+                                        job_ongoing: data.onGoing ?? false,
+                                        auth_user_id: user.userId
+                                    }
+                                },
+                                auth_user_id: user.userId
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (err) {
+            console.log({ err });
+
+            return fail(400, { message: "Couldn't add section." });
         }
     }
 };

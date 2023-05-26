@@ -7,13 +7,13 @@
     import { tick } from 'svelte';
     import ProfileLinks from './ProfileLinks.svelte';
     import { escape } from '$lib/actions/escape';
+    import { userOwnsProfile } from '$lib/stores/userProfile';
 
     let editButton: HTMLButtonElement;
     let nameInput: HTMLInputElement;
 
     $: bio = $page.data.foundUser?.bio;
     $: name = $page.data.foundUser?.name;
-    $: userOwnsProfile = $page.data.foundUser?.username === $page.data.user?.username;
 
     let colors = {
         purple: 'border-purple-300',
@@ -72,7 +72,7 @@
         method="POST"
         action="?/updateProfile"
         use:enhance={handleSubmit}
-        use:clickOutside={stopEditing}
+        use:clickOutside={[stopEditing, isEditing]}
         use:escape={stopEditing}
     >
         <div class="flex items-start justify-between">
@@ -90,7 +90,7 @@
                 {/if}
                 <p class="text-gray-700 font-poppins">@{$page.data.foundUser?.username}</p>
             </div>
-            {#if userOwnsProfile}
+            {#if $userOwnsProfile}
                 <button
                     on:click={toggleEditing}
                     class="hover:text-purple-500 rounded-full transition-colors"
@@ -113,7 +113,7 @@
                 class="font-poppins w-full p-0 resize-none"
             />
         {:else if !bio}
-            {#if userOwnsProfile}
+            {#if $userOwnsProfile}
                 <button
                     on:click={toggleEditing}
                     type="button"

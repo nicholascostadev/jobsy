@@ -11,17 +11,21 @@ datasource db {
 }
 
 model AuthUser {
-  id             String        @id @unique
-  name           String
-  username       String        @unique
-  email          String        @unique
-  bio            String?
-  thumbnailColor String        @default("purple")
-  auth_session   AuthSession[]
-  auth_key       AuthKey[]
-  job_post       JobPost[]
-  applicant      Applicant[]
-  profile_links  ProfileLink[]
+  id               String  @id @unique
+  name             String
+  username         String  @unique
+  email            String  @unique
+  bio              String?
+  thumbnailColor   String  @default("purple")
+  profileSectionId String?
+
+  auth_session     AuthSession[]
+  auth_key         AuthKey[]
+  job_post         JobPost[]
+  applicant        Applicant[]
+  profile_links    ProfileLink[]
+  profile_sections ProfileSections? @relation(fields: [profileSectionId], references: [id])
+  experiences      Experience[]
 
   @@map("auth_user")
 }
@@ -66,25 +70,49 @@ model Applicant {
 }
 
 model JobPost {
-  id           String      @id @unique @default(uuid())
+  id           String   @id @unique @default(uuid())
   title        String
   description  String
   job_title    String
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @updatedAt
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
   salary_start Int?
   salary_end   Int?
-  author       AuthUser    @relation(fields: [auth_user_id], references: [id])
   auth_user_id String
-  applicants   Applicant[]
+
+  author     AuthUser    @relation(fields: [auth_user_id], references: [id])
+  applicants Applicant[]
 }
 
 model ProfileLink {
   id           String   @id @unique @default(uuid())
-  auth_user    AuthUser @relation(fields: [auth_user_id], references: [id])
   auth_user_id String
   name         String
   url          String
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
+
+  auth_user AuthUser @relation(fields: [auth_user_id], references: [id])
+}
+
+model ProfileSections {
+  id           String       @id @unique @default(uuid())
+  auth_user_id String
+  experiences  Experience[]
+  AuthUser     AuthUser[]
+}
+
+model Experience {
+  id                String  @id @unique @default(uuid())
+  auth_user_id      String
+  job_title         String
+  job_description   String
+  job_company       String
+  job_start_date    String
+  job_end_date      String?
+  job_ongoing       Boolean
+  profileSectionsId String?
+
+  auth_user       AuthUser         @relation(fields: [auth_user_id], references: [id])
+  profile_section ProfileSections? @relation(fields: [profileSectionsId], references: [id])
 }

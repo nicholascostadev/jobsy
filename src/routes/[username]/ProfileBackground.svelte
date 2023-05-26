@@ -7,10 +7,11 @@
     import { enhance, type SubmitFunction } from '$app/forms';
     import { page } from '$app/stores';
     import { clickOutside } from '$lib/actions/clickOutside';
+    import { userOwnsProfile } from '$lib/stores/userProfile';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
+    import { getContext } from 'svelte';
 
-    $: userOwnsProfile = $page.data.foundUser?.username === $page.data.user?.username;
     let isEditing = false;
 
     let colors = {
@@ -50,13 +51,13 @@
     };
 </script>
 
-{#if userOwnsProfile}
+{#if $userOwnsProfile}
     <form
         method="POST"
         action="?/updateThumbnailColor"
         class={cn('w-full h-96 group relative', colors[selectedColor])}
         use:enhance={handleSubmitNewColor}
-        use:clickOutside={cancelEditing}
+        use:clickOutside={[cancelEditing]}
     >
         <button
             class={cn(

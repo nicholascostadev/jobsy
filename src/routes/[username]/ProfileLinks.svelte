@@ -7,6 +7,7 @@
     import Modal from '$lib/components/Modal.svelte';
     import { Pencil, Plus } from 'lucide-svelte';
     import LinkModal from './LinkModal.svelte';
+    import { userOwnsProfile } from '$lib/stores/userProfile';
 
     let modalOpen = false;
 
@@ -42,21 +43,25 @@
             {link.name}
         </a>
     {/each}
-    <button
-        class="flex justify-center items-center w-8 h-8 rounded-full border border-purple-400 hover:bg-purple-400/40 transition-colors"
-        type="button"
-        on:click={openModal}
-    >
-        {#if profileLinks.length > 0}
-            <Pencil class="w-4 h-4" />
-        {:else}
-            <Plus class="w-4 h-4" />
-        {/if}
-    </button>
+    {#if $userOwnsProfile}
+        <button
+            class="flex justify-center items-center w-8 h-8 rounded-full hover:bg-purple-400/40 transition-colors"
+            type="button"
+            on:click={openModal}
+        >
+            {#if profileLinks.length > 0}
+                <Pencil class="w-4 h-4" />
+            {:else}
+                <Plus class="w-4 h-4" />
+            {/if}
+        </button>
+    {/if}
 </div>
 
 {#if modalOpen}
     <Modal on:close={closeModal}>
-        <LinkModal {remainingLinks} {hasRemainingLinks} links={profileLinks} />
+        <svelte:fragment slot="content">
+            <LinkModal {remainingLinks} {hasRemainingLinks} links={profileLinks} />
+        </svelte:fragment>
     </Modal>
 {/if}

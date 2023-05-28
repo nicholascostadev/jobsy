@@ -273,6 +273,53 @@ export const actions = {
             return fail(400, { message: 'Error when adding certificate.' });
         }
     },
+    deleteExperience: async ({ request, locals }) => {
+        const { user, session } = await locals.validateUser();
+
+        if (!session) {
+            return fail(400, { message: 'Unauthorized.' });
+        }
+
+        const formData = await request.formData();
+
+        const experienceId = await formData.get('experienceId');
+
+        if (!experienceId) {
+            return fail(400, { message: 'No experienceId received.' });
+        }
+
+        const result = z.string().uuid().safeParse(experienceId);
+
+        if (!result.success) {
+            return fail(400, { message: 'Invalid experienceId.' });
+        }
+
+        const foundExperience = await prisma.experience.findUnique({
+            where: {
+                id: result.data
+            }
+        });
+
+        if (!foundExperience) {
+            return fail(400, { message: 'Experience does not exist.' });
+        }
+
+        if (foundExperience.auth_user_id !== user.userId) {
+            return fail(400, { message: 'You can only delete your own experiences.' });
+        }
+
+        try {
+            await prisma.experience.delete({
+                where: {
+                    id: result.data
+                }
+            });
+        } catch (err) {
+            console.log({ err });
+
+            return fail(400, { message: 'Could not delete experience.' });
+        }
+    },
     deleteCertificate: async ({ request, locals }) => {
         const { user, session } = await locals.validateUser();
 

@@ -1,5 +1,8 @@
 <script lang="ts">
+    import { enhance } from '$app/forms';
+    import { userOwnsProfile } from '$lib/stores/userProfile';
     import type { Experience } from '@prisma/client';
+    import { Trash } from 'lucide-svelte';
 
     export let jobExperiences: Experience[] = [];
 </script>
@@ -16,18 +19,34 @@
             </div>
             <div class="flex justify-between items-center gap-2 w-full">
                 <h3 class="text-xl">{experience.job_title}</h3>
-                <div class="text-gray-800 text-sm">
-                    <span>
-                        {new Date(experience.job_start_date).toLocaleDateString('en-US')}
-                    </span>
-                    -
-                    <span>
-                        {#if !experience.job_ongoing && experience.job_end_date}
-                            {new Date(experience.job_end_date).toLocaleDateString('en-US')}
-                        {:else}
-                            Today
-                        {/if}
-                    </span>
+                <div class="flex items-center gap-2">
+                    <div class="text-gray-800 text-sm">
+                        <span>
+                            {new Date(experience.job_start_date).toLocaleDateString('en-US')}
+                        </span>
+                        -
+                        <span>
+                            {#if !experience.job_ongoing && experience.job_end_date}
+                                {new Date(experience.job_end_date).toLocaleDateString('en-US')}
+                            {:else}
+                                Today
+                            {/if}
+                        </span>
+                    </div>
+
+                    {#if $userOwnsProfile}
+                        <form
+                            action="?/deleteExperience"
+                            method="POST"
+                            use:enhance
+                            class="flex items-center justify-center"
+                        >
+                            <input type="hidden" name="experienceId" value={experience.id} />
+                            <button type="submit">
+                                <Trash class="w-5 h-5 hover:text-red-500 transition-colors" />
+                            </button>
+                        </form>
+                    {/if}
                 </div>
             </div>
         </div>

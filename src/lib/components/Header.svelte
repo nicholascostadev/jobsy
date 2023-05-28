@@ -28,7 +28,7 @@
                 )}>About Us</a
             >
             {#if $page.data.user}
-                <a href="/feed">Jobs</a>
+                <a href="/jobs">Jobs</a>
                 <a href="/jobs/create" class="hidden md:block">Post a Job</a>
                 <form method="POST" class="hidden md:block">
                     <button formaction="/logout" class="hover:text-gray-700" type="submit">

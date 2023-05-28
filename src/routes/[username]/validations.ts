@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
-export const addSectionSchema = z
+export const sectionTypeSchema = z.enum(['experience', 'certificate'], {
+    invalid_type_error: 'Section type must be either experience or certificate.',
+    required_error: 'Section type is required.'
+});
+
+export const addExperienceSchema = z
     .object({
-        sectionType: z.enum(['experience', 'certificate'], {
-            invalid_type_error: 'Section type must be either experience or certificate.',
-            required_error: 'Section type is required.'
-        }),
         jobTitle: z
             .string({
                 required_error: 'Job title is required.'
@@ -71,3 +72,39 @@ export const addSectionSchema = z
             });
         }
     });
+
+export type AddExperienceSchema = z.infer<typeof addExperienceSchema>;
+
+export const addCertificateSchema = z
+    .object({
+        title: z
+            .string({
+                required_error: 'Certificate must have a title.'
+            })
+            .min(1, 'Certificate must have a title.'),
+        description: z.string().optional(),
+        url: z
+            .string()
+            .url('Certificate url must be a valid URL')
+            .startsWith('https://', 'Certificate url must start with https')
+            .optional(),
+        issueDate: z.string().min(1)
+    })
+    .superRefine((values, ctx) => {
+        const startDate = new Date(values.issueDate);
+        const currentDate = new Date();
+
+        function earlierThanToday(date: Date) {
+            return date.getTime() <= currentDate.getTime();
+        }
+
+        if (!earlierThanToday(startDate)) {
+            ctx.addIssue({
+                code: 'custom',
+                path: ['issueDate'],
+                message: 'Issue date must have started at least today.'
+            });
+        }
+    });
+
+export type AddCertificateSchema = z.infer<typeof addCertificateSchema>;

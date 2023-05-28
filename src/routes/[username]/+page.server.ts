@@ -8,12 +8,16 @@ import {
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
-import { addSectionSchema } from './validations.js';
+import { addCertificateSchema, addExperienceSchema } from './validations.js';
 
 export const load = async ({ params }) => {
     const requestedUsername = params.username;
-    const addSectionForm = await superValidate(addSectionSchema, {
-        id: 'addSection'
+    const addExperience = await superValidate(addExperienceSchema, {
+        id: 'addExperience'
+    });
+
+    const addCertificate = await superValidate(addCertificateSchema, {
+        id: 'addCertificate'
     });
 
     const foundUser = await prisma.authUser.findUnique({
@@ -22,11 +26,8 @@ export const load = async ({ params }) => {
         },
         include: {
             profile_links: true,
-            profile_sections: {
-                include: {
-                    experiences: true
-                }
-            }
+            experiences: true,
+            certificates: true
         }
     });
 
@@ -36,7 +37,8 @@ export const load = async ({ params }) => {
 
     return {
         foundUser,
-        addSectionForm
+        addExperience,
+        addCertificate
     };
 };
 
@@ -214,60 +216,61 @@ export const actions = {
             return fail(400, { message: "Couldn't delete link." });
         }
     },
-    addSection: async ({ locals, request }) => {
+    addExperience: async ({ locals, request }) => {
         const { user, session } = await locals.validateUser();
-        const { data } = await superValidate(request, addSectionSchema, {
-            id: 'addSection'
+        const { data } = await superValidate(request, addExperienceSchema, {
+            id: 'addExperience'
         });
 
         if (!session) {
-            return fail(400, { message: "Couldn't add section." });
+            return fail(401, { message: 'Unauthorized' });
         }
 
         try {
-            await prisma.authUser.update({
-                where: {
-                    username: user.username
-                },
+            await prisma.experience.create({
                 data: {
-                    profile_sections: {
-                        upsert: {
-                            create: {
-                                experiences: {
-                                    create: {
-                                        job_title: data.jobTitle,
-                                        job_company: data.jobCompany,
-                                        job_description: data.jobDescription,
-                                        job_start_date: data.jobStartDate,
-                                        job_end_date: data.jobEndDate,
-                                        job_ongoing: data.onGoing ?? false,
-                                        auth_user_id: user.userId
-                                    }
-                                },
-                                auth_user_id: user.userId
-                            },
-                            update: {
-                                experiences: {
-                                    create: {
-                                        job_title: data.jobTitle,
-                                        job_company: data.jobCompany,
-                                        job_description: data.jobDescription,
-                                        job_start_date: data.jobStartDate,
-                                        job_end_date: data.jobEndDate,
-                                        job_ongoing: data.onGoing ?? false,
-                                        auth_user_id: user.userId
-                                    }
-                                },
-                                auth_user_id: user.userId
-                            }
-                        }
-                    }
+                    job_title: data.jobTitle,
+                    job_description: data.jobDescription,
+                    job_company: data.jobCompany,
+                    job_ongoing: data.onGoing ?? false,
+                    job_start_date: new Date(data.jobStartDate),
+                    job_end_date: data.jobEndDate ? new Date(data.jobEndDate) : null,
+                    auth_user_id: user.userId
                 }
             });
         } catch (err) {
             console.log({ err });
 
             return fail(400, { message: "Couldn't add section." });
+        }
+    },
+    addCertificate: async ({ request, locals }) => {
+        const { user, session } = await locals.validateUser();
+
+        const { data } = await superValidate(request, addCertificateSchema, {
+            id: 'addCertificate'
+        });
+
+        if (!session) {
+            return fail(401, { message: 'Unauthorized' });
+        }
+
+        console.log({ issueDate: data.issueDate });
+
+        try {
+            await prisma.certificate.create({
+                data: {
+                    title: data.title,
+                    description: data.description,
+                    issue_date: new Date(data.issueDate),
+                    url: data.url,
+                    auth_user_id: user.userId
+                }
+            });
+        } catch (err) {
+            console.log({ err });
+
+            return fail(400, { message: 'Error when adding certificate.' });
         }
     }
 };

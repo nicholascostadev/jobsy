@@ -88,7 +88,11 @@ export const addCertificateSchema = z
             .url('Certificate url must be a valid URL')
             .startsWith('https://', 'Certificate url must start with https')
             .optional(),
-        issueDate: z.string().min(1)
+        issueDate: z
+            .string({
+                required_error: 'Issue date is required.'
+            })
+            .min(1)
     })
     .superRefine((values, ctx) => {
         const startDate = new Date(values.issueDate);

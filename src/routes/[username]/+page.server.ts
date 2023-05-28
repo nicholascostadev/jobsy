@@ -272,5 +272,52 @@ export const actions = {
 
             return fail(400, { message: 'Error when adding certificate.' });
         }
+    },
+    deleteCertificate: async ({ request, locals }) => {
+        const { user, session } = await locals.validateUser();
+
+        if (!session) {
+            return fail(401, { message: 'Unauthorized' });
+        }
+
+        const formData = await request.formData();
+
+        const certificateId = formData.get('certificateId');
+
+        if (!certificateId) {
+            return fail(400, { message: 'No certificateId received' });
+        }
+
+        const result = z.string().uuid().safeParse(certificateId);
+
+        if (!result.success) {
+            return fail(400, { message: 'Invalid certificateId.' });
+        }
+
+        const foundCertificate = await prisma.certificate.findUnique({
+            where: {
+                id: result.data
+            }
+        });
+
+        if (!foundCertificate) {
+            return fail(400, { message: 'Certificate does not exist.' });
+        }
+
+        if (foundCertificate.auth_user_id !== user.userId) {
+            return fail(400, { message: 'You can only delete your own certificates.' });
+        }
+
+        try {
+            await prisma.certificate.delete({
+                where: {
+                    id: result.data
+                }
+            });
+        } catch (err) {
+            console.log({ err });
+
+            return fail(400, { message: 'Could not delete certificate.' });
+        }
     }
 };

@@ -43,7 +43,6 @@
                     aria-label="Go to profile"
                 />
             {/if}
-            <a href="nicholasmariano">Mariano</a>
             {#if !$page.data.user}
                 <a
                     href="/login"

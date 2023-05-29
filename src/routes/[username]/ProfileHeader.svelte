@@ -1,19 +1,21 @@
 <script lang="ts">
     import { enhance, type SubmitFunction } from '$app/forms';
-    import { page } from '$app/stores';
     import { clickOutside } from '$lib/actions/clickOutside';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
-    import { tick } from 'svelte';
+    import { getContext, tick } from 'svelte';
     import ProfileLinks from './ProfileLinks.svelte';
     import { escape } from '$lib/actions/escape';
     import { userOwnsProfile } from '$lib/stores/userProfile';
+    import type { UserData } from './+page.svelte';
+
+    const userData = getContext<UserData>('userData');
 
     let editButton: HTMLButtonElement;
     let nameInput: HTMLInputElement;
 
-    $: bio = $page.data.foundUser?.bio;
-    $: name = $page.data.foundUser?.name;
+    $: bio = userData?.bio;
+    $: name = userData?.name;
 
     let colors = {
         purple: 'border-purple-300',
@@ -24,21 +26,21 @@
         gray: 'border-gray-300'
     };
 
-    $: thumbnailColor = $page.data.foundUser?.thumbnailColor as keyof typeof colors;
+    $: thumbnailColor = userData?.thumbnailColor as keyof typeof colors;
 
     let isEditing = false;
 
     function stopEditing() {
-        bio = $page.data.foundUser?.bio;
-        name = $page.data.foundUser?.name;
+        bio = userData?.bio;
+        name = userData?.name;
         isEditing = false;
         editButton.focus();
     }
 
     async function toggleEditing() {
         if (isEditing) {
-            bio = $page.data.foundUser?.bio;
-            name = $page.data.foundUser?.name;
+            bio = userData?.bio;
+            name = userData?.name;
         }
 
         isEditing = !isEditing;
@@ -53,8 +55,8 @@
         return async ({ update }) => {
             await update();
             isEditing = false;
-            name = $page.data.foundUser?.name;
-            bio = $page.data.foundUser?.bio;
+            name = userData?.name;
+            bio = userData?.bio;
             editButton.focus();
         };
     };
@@ -86,9 +88,9 @@
                         bind:this={nameInput}
                     />
                 {:else}
-                    <h1 class="text-xl font-poppins">{$page.data.foundUser?.name}</h1>
+                    <h1 class="text-xl font-poppins">{userData?.name}</h1>
                 {/if}
-                <p class="text-gray-700 font-poppins">@{$page.data.foundUser?.username}</p>
+                <p class="text-gray-700 font-poppins">@{userData?.username}</p>
             </div>
             {#if $userOwnsProfile}
                 <button

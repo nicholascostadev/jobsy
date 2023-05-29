@@ -1,33 +1,40 @@
+<script lang="ts" context="module">
+    export type UserData = {
+        id?: string;
+        name?: string;
+        bio?: string | null;
+        email?: string;
+        certificates?: Certificate[];
+        experiences?: Experience[];
+        profile_links?: ProfileLink[];
+        thumbnailColor?: string;
+        username?: string;
+    };
+</script>
+
 <script lang="ts">
-    import { onMount, setContext } from 'svelte';
+    import { setContext } from 'svelte';
     import ProfileBackground from './ProfileBackground.svelte';
     import ProfileHeader from './ProfileHeader.svelte';
     import SectionCreator from './SectionCreator.svelte';
-    import type { Experience } from '@prisma/client';
+    import type { Certificate, Experience, ProfileLink } from '@prisma/client';
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import ProfileExperiences from './ProfileExperiences.svelte';
     import ProfileCertificates from './ProfileCertificates.svelte';
 
     export let data;
 
-    $: sortedJobExperiences = [] as Experience[];
-
-    $: {
-        if (data.foundUser?.experiences) {
-            const newSortedArr: typeof sortedJobExperiences = [];
-            const found = data.foundUser.experiences.findIndex((val) => val.job_ongoing);
-
-            if (found !== -1) {
-                newSortedArr.push(data.foundUser.experiences[found]);
-
-                data.foundUser.experiences.forEach((val, i) => {
-                    if (i !== found) newSortedArr.push(val);
-                });
-            }
-
-            sortedJobExperiences = newSortedArr;
-        }
-    }
+    setContext<UserData>('userData', {
+        id: data.foundUser?.id,
+        name: data.foundUser?.name,
+        bio: data.foundUser?.bio,
+        email: data.foundUser?.email,
+        certificates: data.foundUser?.certificates,
+        experiences: data.foundUser?.experiences,
+        profile_links: data.foundUser?.profile_links,
+        thumbnailColor: data.foundUser?.thumbnailColor,
+        username: data.foundUser?.username
+    });
 
     $userOwnsProfile = data.foundUser?.id === data.user?.userId;
 </script>
@@ -38,10 +45,10 @@
         <ProfileHeader />
 
         <div class="mt-12 flex flex-col gap-4">
-            <ProfileExperiences jobExperiences={sortedJobExperiences} />
+            <ProfileExperiences />
         </div>
         <div class="mt-12 flex flex-col gap-4">
-            <ProfileCertificates certificates={data.foundUser?.certificates ?? []} />
+            <ProfileCertificates />
         </div>
 
         {#if $userOwnsProfile}

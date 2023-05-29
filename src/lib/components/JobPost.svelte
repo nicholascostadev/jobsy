@@ -23,7 +23,7 @@
         minute: 'numeric'
     }).format(new Date(job.created_at));
 
-    $: href = job.id == $page.url.searchParams.get('postId') ? '/feed' : `/feed?postId=${job.id}`;
+    $: href = job.id == $page.url.searchParams.get('postId') ? '/jobs' : `/jobs?postId=${job.id}`;
 </script>
 
 <div class="p-2 space-y-2">

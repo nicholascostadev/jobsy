@@ -63,7 +63,7 @@
     <div class="prose prose-purple">{@html jobData.description}</div>
 
     {#if !userOwnsPost}
-        <form method="POST" action="/feed?/apply" use:enhance={handleSubmit}>
+        <form method="POST" action="/jobs?/apply" use:enhance={handleSubmit}>
             <input type="hidden" name="jobId" value={jobData.id} />
             <button
                 class="flex justify-center items-center rounded-md border border-purple-500 enabled:hover:bg-purple-500 enabled:hover:text-white p-2 transition-colors h-10 disabled:cursor-not-allowed"

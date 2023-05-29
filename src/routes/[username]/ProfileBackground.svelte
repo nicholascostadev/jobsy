@@ -5,12 +5,14 @@
 
 <script lang="ts">
     import { enhance, type SubmitFunction } from '$app/forms';
-    import { page } from '$app/stores';
     import { clickOutside } from '$lib/actions/clickOutside';
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
     import { getContext } from 'svelte';
+    import type { UserData } from './+page.svelte';
+
+    const userData = getContext<UserData>('userData');
 
     let isEditing = false;
 
@@ -23,24 +25,26 @@
         gray: 'bg-gray-300'
     };
 
-    $: hasSelectedAnotherColor = selectedColor !== $page.data.foundUser?.thumbnailColor;
-    $: selectedColor = $page.data.foundUser?.thumbnailColor as keyof typeof colors;
+    type ColorKey = keyof typeof colors;
+
+    $: hasSelectedAnotherColor = selectedColor !== userData?.thumbnailColor;
+    $: selectedColor = userData?.thumbnailColor as ColorKey;
 
     function cancelEditing() {
         isEditing = false;
-        selectedColor = $page.data.foundUser?.thumbnailColor;
+        selectedColor = userData?.thumbnailColor as ColorKey;
     }
 
     function toggleEditing() {
         if (isEditing) {
-            selectedColor = $page.data.foundUser?.thumbnailColor;
+            selectedColor = userData?.thumbnailColor as ColorKey;
         }
 
         isEditing = !isEditing;
     }
 
     function selectColor(color: string) {
-        selectedColor = color as keyof typeof colors;
+        selectedColor = color as ColorKey;
     }
 
     const handleSubmitNewColor: SubmitFunction = async () => {

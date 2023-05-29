@@ -3,14 +3,35 @@
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import type { Experience } from '@prisma/client';
     import { Trash } from 'lucide-svelte';
+    import { getContext } from 'svelte';
+    import type { UserData } from './+page.svelte';
 
-    export let jobExperiences: Experience[] = [];
+    const userData = getContext<UserData>('userData');
+
+    $: sortedJobExperiences = [] as Experience[];
+
+    $: {
+        if (userData?.experiences) {
+            const newSortedArr: typeof sortedJobExperiences = [];
+            const found = userData.experiences.findIndex((val) => val.job_ongoing);
+
+            if (found !== -1) {
+                newSortedArr.push(userData.experiences[found]);
+
+                userData.experiences.forEach((val, i) => {
+                    if (i !== found) newSortedArr.push(val);
+                });
+            }
+
+            sortedJobExperiences = newSortedArr;
+        }
+    }
 </script>
 
-{#if jobExperiences.length > 0}
+{#if sortedJobExperiences.length > 0}
     <h2 class="text-2xl">Experiences</h2>
 {/if}
-{#each jobExperiences as experience}
+{#each sortedJobExperiences as experience}
     <div class="border border-gray-200 rounded-md p-4 bg-gray-50">
         <div class="flex flex-col items-start gap-2 w-full">
             <div class="flex items-center gap-2 w-full">

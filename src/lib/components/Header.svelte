@@ -65,7 +65,7 @@
                 on:click={closeDrawer}>About Us</a
             >
             {#if $page.data.user}
-                <a href="/feed" class="text-lg" on:click={closeDrawer}>Jobs</a>
+                <a href="/jobs" class="text-lg" on:click={closeDrawer}>Jobs</a>
                 <a href="/jobs/create" class="text-lg" on:click={closeDrawer}>Post a Job</a>
                 <form method="POST">
                     <button

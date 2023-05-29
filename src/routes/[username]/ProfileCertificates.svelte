@@ -3,15 +3,19 @@
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import type { Certificate } from '@prisma/client';
     import { Trash } from 'lucide-svelte';
+    import { getContext } from 'svelte';
+    import type { UserData } from './+page.svelte';
 
-    export let certificates: Certificate[] = [];
+    const userData = getContext<UserData>('userData');
+
+    let certificates: Certificate[] = userData.certificates ?? [];
 </script>
 
 {#if certificates.length > 0}
     <h2 class="text-2xl">Certificates</h2>
 {/if}
 {#each certificates as certificate}
-    <div class="border border-gray-200 rounded-md p-4 bg-gray-50 relative">
+    <div class="border border-gray-200 rounded-md p-4 bg-gray-50">
         <div class="flex flex-col items-start gap-2 w-full">
             <div class="flex justify-between items-center gap-2 w-full">
                 <h3 class="text-xl">{certificate.title}</h3>

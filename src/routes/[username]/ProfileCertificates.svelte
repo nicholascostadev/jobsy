@@ -1,14 +1,10 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
     import { userOwnsProfile } from '$lib/stores/userProfile';
-    import type { Certificate } from '@prisma/client';
     import { Trash } from 'lucide-svelte';
-    import { getContext } from 'svelte';
-    import type { UserData } from './+page.svelte';
+    import { pageUser } from './stores';
 
-    const userData = getContext<UserData>('userData');
-
-    let certificates: Certificate[] = userData.certificates ?? [];
+    $: certificates = $pageUser.certificates ?? [];
 </script>
 
 {#if certificates.length > 0}

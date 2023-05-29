@@ -3,22 +3,19 @@
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import type { Experience } from '@prisma/client';
     import { Trash } from 'lucide-svelte';
-    import { getContext } from 'svelte';
-    import type { UserData } from './+page.svelte';
-
-    const userData = getContext<UserData>('userData');
+    import { pageUser } from './stores';
 
     $: sortedJobExperiences = [] as Experience[];
 
     $: {
-        if (userData?.experiences) {
+        if ($pageUser?.experiences) {
             const newSortedArr: typeof sortedJobExperiences = [];
-            const found = userData.experiences.findIndex((val) => val.job_ongoing);
+            const found = $pageUser.experiences.findIndex((val) => val.job_ongoing);
 
             if (found !== -1) {
-                newSortedArr.push(userData.experiences[found]);
+                newSortedArr.push($pageUser.experiences[found]);
 
-                userData.experiences.forEach((val, i) => {
+                $pageUser.experiences.forEach((val, i) => {
                     if (i !== found) newSortedArr.push(val);
                 });
             }

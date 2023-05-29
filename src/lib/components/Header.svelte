@@ -25,8 +25,10 @@
                 class={cn(
                     'hover:text-gray-700 transition-colors',
                     $page.route.id !== '/' && 'hidden'
-                )}>About Us</a
+                )}
             >
+                About Us
+            </a>
             {#if $page.data.user}
                 <a href="/jobs">Jobs</a>
                 <a href="/jobs/create" class="hidden md:block">Post a Job</a>
@@ -41,6 +43,7 @@
                     aria-label="Go to profile"
                 />
             {/if}
+            <a href="nicholasmariano">Mariano</a>
             {#if !$page.data.user}
                 <a
                     href="/login"

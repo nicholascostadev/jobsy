@@ -7,15 +7,13 @@
     import ProfileLinks from './ProfileLinks.svelte';
     import { escape } from '$lib/actions/escape';
     import { userOwnsProfile } from '$lib/stores/userProfile';
-    import type { UserData } from './+page.svelte';
-
-    const userData = getContext<UserData>('userData');
+    import { pageUser } from './stores';
 
     let editButton: HTMLButtonElement;
     let nameInput: HTMLInputElement;
 
-    $: bio = userData?.bio;
-    $: name = userData?.name;
+    $: bio = $pageUser?.bio;
+    $: name = $pageUser?.name;
 
     let colors = {
         purple: 'border-purple-300',
@@ -26,21 +24,21 @@
         gray: 'border-gray-300'
     };
 
-    $: thumbnailColor = userData?.thumbnailColor as keyof typeof colors;
+    $: thumbnailColor = $pageUser?.thumbnailColor as keyof typeof colors;
 
     let isEditing = false;
 
     function stopEditing() {
-        bio = userData?.bio;
-        name = userData?.name;
+        bio = $pageUser?.bio;
+        name = $pageUser?.name;
         isEditing = false;
         editButton.focus();
     }
 
     async function toggleEditing() {
         if (isEditing) {
-            bio = userData?.bio;
-            name = userData?.name;
+            bio = $pageUser?.bio;
+            name = $pageUser?.name;
         }
 
         isEditing = !isEditing;
@@ -55,8 +53,8 @@
         return async ({ update }) => {
             await update();
             isEditing = false;
-            name = userData?.name;
-            bio = userData?.bio;
+            name = $pageUser?.name;
+            bio = $pageUser?.bio;
             editButton.focus();
         };
     };
@@ -88,9 +86,9 @@
                         bind:this={nameInput}
                     />
                 {:else}
-                    <h1 class="text-xl font-poppins">{userData?.name}</h1>
+                    <h1 class="text-xl font-poppins">{$pageUser?.name}</h1>
                 {/if}
-                <p class="text-gray-700 font-poppins">@{userData?.username}</p>
+                <p class="text-gray-700 font-poppins">@{$pageUser?.username}</p>
             </div>
             {#if $userOwnsProfile}
                 <button

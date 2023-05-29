@@ -3,15 +3,15 @@
 </script>
 
 <script lang="ts">
-    import { page } from '$app/stores';
     import Modal from '$lib/components/Modal.svelte';
     import { Pencil, Plus } from 'lucide-svelte';
     import LinkModal from './LinkModal.svelte';
     import { userOwnsProfile } from '$lib/stores/userProfile';
+    import { pageUser } from './stores';
 
     let modalOpen = false;
 
-    $: profileLinks = $page.data.foundUser.profile_links as {
+    $: profileLinks = $pageUser.profile_links as {
         name: string;
         url: string;
         id: string;

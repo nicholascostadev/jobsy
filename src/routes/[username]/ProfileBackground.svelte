@@ -9,10 +9,7 @@
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
-    import { getContext } from 'svelte';
-    import type { UserData } from './+page.svelte';
-
-    const userData = getContext<UserData>('userData');
+    import { pageUser } from './stores';
 
     let isEditing = false;
 
@@ -27,17 +24,17 @@
 
     type ColorKey = keyof typeof colors;
 
-    $: hasSelectedAnotherColor = selectedColor !== userData?.thumbnailColor;
-    $: selectedColor = userData?.thumbnailColor as ColorKey;
+    $: hasSelectedAnotherColor = selectedColor !== $pageUser?.thumbnailColor;
+    $: selectedColor = $pageUser?.thumbnailColor as ColorKey;
 
     function cancelEditing() {
         isEditing = false;
-        selectedColor = userData?.thumbnailColor as ColorKey;
+        selectedColor = $pageUser?.thumbnailColor as ColorKey;
     }
 
     function toggleEditing() {
         if (isEditing) {
-            selectedColor = userData?.thumbnailColor as ColorKey;
+            selectedColor = $pageUser?.thumbnailColor as ColorKey;
         }
 
         isEditing = !isEditing;

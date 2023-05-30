@@ -6,6 +6,7 @@
 <script lang="ts">
     import { enhance, type SubmitFunction } from '$app/forms';
     import { clickOutside } from '$lib/actions/clickOutside';
+    import { escape } from '$lib/actions/escape';
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
@@ -59,6 +60,7 @@
         class={cn('w-full h-96 group relative', colors[selectedColor])}
         use:enhance={handleSubmitNewColor}
         use:clickOutside={[cancelEditing]}
+        use:escape={cancelEditing}
     >
         <button
             class={cn(

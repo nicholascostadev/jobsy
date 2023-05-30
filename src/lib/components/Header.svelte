@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Menu } from 'lucide-svelte';
+    import { Menu, Newspaper, Plus, ScrollText, UserCircle2 } from 'lucide-svelte';
     import Drawer from './Drawer.svelte';
     import { cn } from '$lib/utils';
     import { page } from '$app/stores';
@@ -9,10 +9,6 @@
 
     let drawerOpen = false;
     let dropdownOpen = false;
-
-    function toggleDropdown() {
-        dropdownOpen = !dropdownOpen;
-    }
 
     function closeDropdown() {
         dropdownOpen = false;
@@ -43,7 +39,6 @@
             </a>
             {#if $page.data.user}
                 <a href="/jobs">Jobs</a>
-                <a href="/jobs/create" class="hidden md:block">Post a Job</a>
                 <form method="POST" class="hidden md:block">
                     <button formaction="/logout" class="hover:text-gray-700" type="submit">
                         Logout
@@ -65,28 +60,37 @@
                                 <li>
                                     <a
                                         href="/{$page.data.user.username}"
-                                        class="p-2 hover:bg-purple-400/20 block rounded-t-md"
+                                        class="p-2 hover:bg-purple-400/20 flex items-center justify-start gap-2 rounded-t-md"
                                         on:click={closeDropdown}
                                     >
-                                        Profile
+                                        <UserCircle2 class="w-5 h-5" /> Profile
                                     </a>
                                 </li>
                                 <li>
                                     <a
                                         href="/applications"
-                                        class="p-2 hover:bg-purple-400/20 block"
+                                        class="p-2 hover:bg-purple-400/20 flex items-center justify-start gap-2"
                                         on:click={closeDropdown}
                                     >
-                                        View my applications
+                                        <ScrollText class="w-5 h-5" /> View my applications
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/jobs/create"
+                                        class="p-2 hover:bg-purple-400/20 flex items-center justify-start gap-2"
+                                        on:click={closeDropdown}
+                                    >
+                                        <Plus class="w-5 h-5" /> Post a Job
                                     </a>
                                 </li>
                                 <li>
                                     <a
                                         href="/published-jobs"
-                                        class="p-2 hover:bg-purple-400/20 block rounded-b-md"
+                                        class="p-2 hover:bg-purple-400/20 flex items-center justify-start gap-2 rounded-b-md"
                                         on:click={closeDropdown}
                                     >
-                                        Published jobs
+                                        <Newspaper class="w-5 h-5" /> Published jobs
                                     </a>
                                 </li>
                             </ul>

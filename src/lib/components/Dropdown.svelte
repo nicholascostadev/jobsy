@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { fade } from 'svelte/transition';
+    import { slide } from 'svelte/transition';
     import { clickOutside } from '$lib/actions/clickOutside';
     import { trapFocus } from '$lib/actions/trapFocus';
     import { escape } from '$lib/actions/escape';
@@ -14,7 +14,7 @@
     let dispatch = createEventDispatcher();
 
     $: left = targetElm?.offsetLeft - 100;
-    $: top = targetElm?.offsetTop + 40;
+    $: top = targetElm?.offsetTop + 50;
 </script>
 
 <div
@@ -24,7 +24,7 @@
     )}
     style:top="{top}px"
     style:left="{left}px"
-    transition:fade={{ duration: 300 }}
+    transition:slide={{ duration: 300 }}
     use:clickOutside={[() => dispatch('close'), true]}
     use:escape={() => dispatch('close')}
     use:trapFocus

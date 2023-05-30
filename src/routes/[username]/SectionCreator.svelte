@@ -15,7 +15,7 @@
 </script>
 
 {#if modalOpen}
-    <Modal on:close={() => (modalOpen = false)}>
+    <Modal on:close={() => (modalOpen = false)} class="w-[750px]">
         <h2 slot="title" class="text-2xl">Add a new section</h2>
         <svelte:fragment slot="content">
             <div class="flex flex-col justify-start items-start pb-2">

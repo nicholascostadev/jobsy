@@ -3,8 +3,21 @@
     import Drawer from './Drawer.svelte';
     import { cn } from '$lib/utils';
     import { page } from '$app/stores';
+    import Dropdown from './Dropdown.svelte';
+
+    let dropdowncontainer: HTMLDivElement;
 
     let drawerOpen = false;
+    let dropdownOpen = false;
+
+    function toggleDropdown() {
+        console.log('Called');
+        dropdownOpen = !dropdownOpen;
+    }
+
+    function closeDropdown() {
+        dropdownOpen = false;
+    }
 
     function openDrawer() {
         drawerOpen = true;
@@ -37,11 +50,56 @@
                         Logout
                     </button>
                 </form>
-                <a
-                    href="/{$page.data.user?.username}"
-                    class="bg-gray-400 w-10 h-10 rounded-full"
-                    aria-label="Go to profile"
-                />
+                <div bind:this={dropdowncontainer}>
+                    <button
+                        type="button"
+                        class="w-10 h-10 bg-gray-400 rounded-full"
+                        on:click={() => (dropdownOpen = true)}
+                    />
+                    {#if dropdownOpen}
+                        <Dropdown
+                            on:close={closeDropdown}
+                            targetElm={dropdowncontainer}
+                            class="w-fit"
+                        >
+                            <ul>
+                                <li>
+                                    <a
+                                        href="/{$page.data.user.username}"
+                                        class="p-2 hover:bg-purple-400/20 block rounded-t-md"
+                                        on:click={closeDropdown}
+                                    >
+                                        Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/applications"
+                                        class="p-2 hover:bg-purple-400/20 block"
+                                        on:click={closeDropdown}
+                                    >
+                                        View my applications
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/published-jobs"
+                                        class="p-2 hover:bg-purple-400/20 block rounded-b-md"
+                                        on:click={closeDropdown}
+                                    >
+                                        Published jobs
+                                    </a>
+                                </li>
+                            </ul>
+                        </Dropdown>
+                    {/if}
+                </div>
+
+                <!-- <a -->
+                <!--     href="/{$page.data.user?.username}" -->
+                <!--     class="bg-gray-400 w-10 h-10 rounded-full" -->
+                <!--     aria-label="Go to profile" -->
+                <!-- /> -->
             {/if}
             {#if !$page.data.user}
                 <a

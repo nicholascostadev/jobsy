@@ -11,7 +11,7 @@
 </script>
 
 <div
-    class="bg-white h-screen w-screen fixed inset-0"
+    class="bg-white h-screen w-screen fixed inset-0 z-50"
     in:fly={{ x: '100%', y: 0 }}
     out:fly={{ x: '100%', y: 0 }}
 >

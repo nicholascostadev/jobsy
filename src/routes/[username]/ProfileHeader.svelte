@@ -68,7 +68,7 @@
         )}
     />
     <form
-        class="flex-1 md:pt-14"
+        class="flex-1 md:pt-14 max-w-full"
         method="POST"
         action="?/updateProfile"
         use:enhance={handleSubmit}

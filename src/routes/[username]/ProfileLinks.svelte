@@ -32,7 +32,7 @@
     }
 </script>
 
-<div class="mt-2 flex items-center justify-start gap-2">
+<div class="mt-2 flex items-center justify-start gap-2 flex-wrap">
     {#each profileLinks as link}
         <a
             href={link.url}

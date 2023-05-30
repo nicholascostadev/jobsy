@@ -15,8 +15,6 @@
 
     $: left = targetElm?.offsetLeft - 100;
     $: top = targetElm?.offsetTop + 40;
-
-    $: console.log({ targetElm });
 </script>
 
 <div

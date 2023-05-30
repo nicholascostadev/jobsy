@@ -1,10 +1,11 @@
 import { prisma } from '$lib/server/prisma.js';
-import { fail, json, redirect } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import { z } from 'zod';
+import type { PageServerLoad } from './$types';
 
-export const load = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals }) => {
     const session = await locals.validate();
     if (!session) {
         throw redirect(302, '/login');
@@ -28,7 +29,7 @@ export const load = async ({ locals }) => {
 
 const jobIdSchema = z.string().min(1).uuid();
 
-export const actions = {
+export const actions: Actions = {
     apply: async ({ request, locals }) => {
         const { user, session } = await locals.validateUser();
 

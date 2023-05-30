@@ -1,7 +1,8 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
 import { prisma } from '$lib/server/prisma.js';
+import type { PageServerLoad } from '../$types';
 
 const schema = z.object({
     title: z.string().min(2, 'Name must have at least 2 characters.'),
@@ -11,7 +12,7 @@ const schema = z.object({
     salaryEnd: z.number().min(1, 'Maximum salary must be greater than 0.').nullish()
 });
 
-export const load = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals }) => {
     const form = await superValidate(schema);
     const session = await locals.validate();
 
@@ -22,7 +23,7 @@ export const load = async ({ locals }) => {
     return { form };
 };
 
-export const actions = {
+export const actions: Actions = {
     default: async ({ request, locals }) => {
         const form = await superValidate(request, schema);
         const { user, session } = await locals.validateUser();

@@ -11,7 +11,6 @@
     let dropdownOpen = false;
 
     function toggleDropdown() {
-        console.log('Called');
         dropdownOpen = !dropdownOpen;
     }
 

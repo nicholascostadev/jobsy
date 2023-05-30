@@ -1,15 +1,16 @@
 import { auth } from '$lib/server/lucia.js';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { LuciaError } from 'lucia-auth';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
+import type { PageServerLoad } from './$types';
 
 const schema = z.object({
     username: z.string().min(1, 'Username must have at least 1 character.'),
     password: z.string().min(1, 'Password must have at least 1 character.')
 });
 
-export const load = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals }) => {
     const form = await superValidate(schema);
     const session = await locals.validate();
 
@@ -20,7 +21,7 @@ export const load = async ({ locals }) => {
     return { form };
 };
 
-export const actions = {
+export const actions: Actions = {
     default: async ({ request, locals }) => {
         const form = await superValidate(request, schema);
 

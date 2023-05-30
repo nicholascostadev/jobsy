@@ -5,12 +5,13 @@ import {
     linkNameSchema,
     thumbnailColorSchema
 } from '$lib/server/schemas.js';
-import { fail } from '@sveltejs/kit';
+import { fail, type Actions } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import { addCertificateSchema, addExperienceSchema } from './validations.js';
+import type { PageServerLoad } from './$types.js';
 
-export const load = async ({ params }) => {
+export const load: PageServerLoad = async ({ params }) => {
     const requestedUsername = params.username;
     const addExperience = await superValidate(addExperienceSchema, {
         id: 'addExperience'
@@ -42,7 +43,7 @@ export const load = async ({ params }) => {
     };
 };
 
-export const actions = {
+export const actions: Actions = {
     updateProfile: async ({ params, request, locals }) => {
         const { user, session } = await locals.validateUser();
         const formData = await request.formData();
@@ -254,8 +255,6 @@ export const actions = {
         if (!session) {
             return fail(401, { message: 'Unauthorized' });
         }
-
-        console.log({ issueDate: data.issueDate });
 
         try {
             await prisma.certificate.create({

@@ -1,8 +1,9 @@
 import { prisma } from '$lib/server/prisma.js';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
+import type { RequestHandler } from './$types';
 
-export const GET = async ({ params, locals }) => {
+export const GET: RequestHandler = async ({ params, locals }) => {
     const session = await locals.validate();
 
     if (!session) {

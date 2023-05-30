@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { X } from 'lucide-svelte';
     import { createEventDispatcher } from 'svelte';
     import { fly } from 'svelte/transition';

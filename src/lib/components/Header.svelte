@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { Menu } from 'lucide-svelte';
     import Drawer from './Drawer.svelte';
     import { cn } from '$lib/utils';

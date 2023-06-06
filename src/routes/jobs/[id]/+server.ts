@@ -3,16 +3,7 @@ import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = async ({ params, locals }) => {
-    const session = await locals.validate();
-
-    if (!session) {
-        return new Response(
-            JSON.stringify({ message: 'You must be logged in to search blog posts.' }),
-            { status: 401 }
-        );
-    }
-
+export const GET: RequestHandler = async ({ params }) => {
     const id = params.id;
 
     const post = await prisma.jobPost.findUnique({

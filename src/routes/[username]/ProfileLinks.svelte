@@ -7,7 +7,7 @@
     import { Pencil, Plus } from 'lucide-svelte';
     import LinkModal from './LinkModal.svelte';
     import { userOwnsProfile } from '$lib/stores/userProfile';
-    import { pageUser } from './stores';
+    import { pageUser } from '../../stores/pageUser';
 
     let modalOpen = false;
 

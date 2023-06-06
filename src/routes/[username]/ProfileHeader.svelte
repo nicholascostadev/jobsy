@@ -3,11 +3,11 @@
     import { clickOutside } from '$lib/actions/clickOutside';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
-    import { getContext, tick } from 'svelte';
+    import { tick } from 'svelte';
     import ProfileLinks from './ProfileLinks.svelte';
     import { escape } from '$lib/actions/escape';
     import { userOwnsProfile } from '$lib/stores/userProfile';
-    import { pageUser } from './stores';
+    import { pageUser } from '../../stores/pageUser';
 
     let editButton: HTMLButtonElement;
     let nameInput: HTMLInputElement;

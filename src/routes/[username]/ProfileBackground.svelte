@@ -10,7 +10,7 @@
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import { cn } from '$lib/utils';
     import { Edit, X } from 'lucide-svelte';
-    import { pageUser } from './stores';
+    import { pageUser } from '../../stores/pageUser';
 
     let isEditing = false;
 

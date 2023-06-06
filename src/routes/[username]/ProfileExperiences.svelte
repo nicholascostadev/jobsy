@@ -3,7 +3,7 @@
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import type { Experience } from '@prisma/client';
     import { Trash } from 'lucide-svelte';
-    import { pageUser } from './stores';
+    import { pageUser } from '../../stores/pageUser';
 
     $: sortedJobExperiences = [] as Experience[];
 

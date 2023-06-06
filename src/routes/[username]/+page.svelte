@@ -5,11 +5,11 @@
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import ProfileExperiences from './ProfileExperiences.svelte';
     import ProfileCertificates from './ProfileCertificates.svelte';
-    import { setupPageUser } from './stores';
+    import { pageUser } from '../../stores/pageUser';
 
     export let data;
 
-    $: setupPageUser({ ...data.foundUser });
+    $: data.foundUser && ($pageUser = data.foundUser);
 
     $: $userOwnsProfile = data.foundUser?.id === data.user?.userId;
 </script>

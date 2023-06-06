@@ -14,7 +14,3 @@ export type UserData = {
 };
 
 export const pageUser = writable<UserData>();
-
-export function setupPageUser(userData: UserData) {
-    pageUser.set(userData);
-}

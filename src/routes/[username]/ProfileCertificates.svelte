@@ -2,9 +2,9 @@
     import { enhance } from '$app/forms';
     import { userOwnsProfile } from '$lib/stores/userProfile';
     import { Trash } from 'lucide-svelte';
-    import { pageUser } from './stores';
+    import { pageUser } from '../../stores/pageUser';
 
-    $: certificates = $pageUser.certificates ?? [];
+    $: certificates = $pageUser?.certificates ?? [];
 </script>
 
 {#if certificates.length > 0}

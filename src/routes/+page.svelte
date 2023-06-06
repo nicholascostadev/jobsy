@@ -1,5 +1,9 @@
 <script lang="ts">
+    import { invalidateAll } from '$app/navigation';
     import { ArrowRight } from 'lucide-svelte';
+    import { onMount } from 'svelte';
+
+    onMount(async () => await invalidateAll());
 </script>
 
 <main class="px-layout min-h-with-header md:px-layout-md bg-gray-50">

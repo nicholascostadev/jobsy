@@ -12,13 +12,8 @@ const schema = z.object({
     salaryEnd: z.number().min(1, 'Maximum salary must be greater than 0.').nullish()
 });
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async () => {
     const form = await superValidate(schema);
-    const session = await locals.validate();
-
-    if (!session) {
-        throw redirect(302, '/');
-    }
 
     return { form };
 };

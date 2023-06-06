@@ -10,13 +10,8 @@ const schema = z.object({
     password: z.string().min(1, 'Password must have at least 1 character.')
 });
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async () => {
     const form = await superValidate(schema);
-    const session = await locals.validate();
-
-    if (session) {
-        throw redirect(302, '/');
-    }
 
     return { form };
 };

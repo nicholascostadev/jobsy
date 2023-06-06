@@ -1,16 +1,11 @@
 import { prisma } from '$lib/server/prisma.js';
-import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { fail, type Actions } from '@sveltejs/kit';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import { z } from 'zod';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals }) => {
-    const session = await locals.validate();
-    if (!session) {
-        throw redirect(302, '/login');
-    }
-
+export const load: PageServerLoad = async () => {
     let jobPosts = await prisma.jobPost.findMany({
         include: {
             applicants: true

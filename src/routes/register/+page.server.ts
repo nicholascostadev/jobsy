@@ -3,6 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
 import { nameSchema, usernameSchema } from '$lib/server/schemas.js';
+import type { PageServerLoad } from './$types.js';
 
 const schema = z.object({
     name: nameSchema,
@@ -11,13 +12,8 @@ const schema = z.object({
     password: z.string().min(5, 'Password must have at least 5 characters.')
 });
 
-export const load = async ({ locals }) => {
+export const load: PageServerLoad = async () => {
     const form = await superValidate(schema);
-    const session = await locals.validate();
-
-    if (session) {
-        throw redirect(302, '/');
-    }
 
     return { form };
 };

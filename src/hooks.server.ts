@@ -8,7 +8,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals = auth.handleRequest(event);
     const session = await event.locals.validate();
 
-    if (!publicRoutes.some((pathname) => event.url.pathname.startsWith(pathname)) && !session) {
+    if (!publicRoutes.includes(event.url.pathname) && !session) {
         throw redirect(303, '/login');
     }
 

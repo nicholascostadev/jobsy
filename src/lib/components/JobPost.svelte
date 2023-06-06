@@ -37,7 +37,7 @@
             <small class="text-sm text-gray-600">{formattedPostedAt}</small>
         </a>
     </div>
-    <div class={cn('leading-tight line-clamp-3')}>
+    <div class="leading-tight line-clamp-3">
         {@html job.description}
     </div>
 </div>
